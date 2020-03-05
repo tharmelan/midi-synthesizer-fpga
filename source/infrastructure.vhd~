@@ -1,0 +1,57 @@
+-------------------------------------------
+-- Block code:  infrastructure.vhd
+-- Function: Synchronises the signal to the clock
+-------------------------------------------
+
+-- Library & Use Statements
+-------------------------------------------
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+
+-- Entity Declaration
+-------------------------------------------
+ENTITY infrastructure IS
+  PORT( clk,reset_n : IN    std_logic;
+        bit_i       : IN   std_logic;
+        bit_o       : OUT   std_logic
+      );
+END infrastructure;
+
+
+-- Architecture Declaration
+-------------------------------------------
+ARCHITECTURE rtl OF infrastructure IS
+-- Signals & Constants Declaration
+-------------------------------------------
+signal ff1, ff2 : std_logic;
+
+
+-- Begin Architecture
+-------------------------------------------
+BEGIN
+
+  --------------------------------------------------
+  -- PROCESS FOR REGISTERS
+  --------------------------------------------------
+  flip_flops : PROCESS(clk, reset_n)
+  BEGIN
+    IF reset_n = '0' THEN
+      ff1 <= '0';
+      ff2 <= '0';
+    ELSIF rising_edge(clk) THEN
+      ff2 <= ff1;
+      ff1 <= bit_i;
+    END IF;
+  END PROCESS flip_flops;
+
+
+  --------------------------------------------------
+  -- CONCURRENT ASSIGNMENTS
+  --------------------------------------------------
+  bit_o <= ff2;
+
+
+ -- End Architecture
+-------------------------------------------
+END rtl;
