@@ -23,7 +23,7 @@ entity codec_controller IS
         ack_error_i  : IN    std_logic;
         sw_sync_i    : IN    std_logic_vector(2 downto 0);
         write_o      : OUT   std_logic;
-        write_data_o : OUT   std_logic_vector(8 downto 0);
+        write_data_o : OUT   std_logic_vector(15 downto 0);
         mute_o       : OUT   std_logic      
       );
 END codec_controller;
@@ -36,7 +36,7 @@ ARCHITECTURE rtl OF codec_controller IS
 -------------------------------------------
   type t_state is (s_idle, s_start_write, s_wait);
   signal state, next_state : t_state;
-  signal count, next_count : integer;
+  signal count, next_count : unsigned(3 downto 0);
 
 
 -- Begin Architecture
@@ -67,7 +67,7 @@ BEGIN
             next_count <= count + 1;
           else
             next_state <= s_idle;
-            next_count <= 0;
+            next_count <= (others => '0');
           end if;
         end if;
 
@@ -86,7 +86,7 @@ BEGIN
   flip_flops : PROCESS(clk, reset_n)
   BEGIN
     IF reset_n = '0' THEN
-      count <= 0;
+      count <= (others => '0');
       state <= s_idle;
     ELSIF rising_edge(clk) THEN
       count <= next_count;
@@ -101,11 +101,11 @@ BEGIN
 
   with sw_sync_i select
     write_data_o <=
-    C_W8731_ANALOG_MUTE_LEFT(count)  when "100",
-    C_W8731_ANALOG_MUTE_RIGHT(count) when "011",
-    C_W8731_ANALOG_MUTE_BOTH(count) when "111",
-    C_W8731_ANALOG_BYPASS(count) when "001",
-    C_W8731_ADC_DAC_0DB_48K(count) when others;
+    ("000" & std_logic_vector(count) & C_W8731_ANALOG_MUTE_LEFT(to_integer(unsigned(count))))  when "100",
+    ("000" & std_logic_vector(count) & C_W8731_ANALOG_MUTE_RIGHT(to_integer(unsigned(count)))) when "011",
+    ("000" & std_logic_vector(count) & C_W8731_ANALOG_MUTE_BOTH(to_integer(unsigned(count)))) when "111",
+    ("000" & std_logic_vector(count) & C_W8731_ANALOG_BYPASS(to_integer(unsigned(count)))) when "001",
+    ("000" & std_logic_vector(count) & C_W8731_ADC_DAC_0DB_48K(to_integer(unsigned(count)))) when others;
 
  -- End Architecture
 -------------------------------------------
