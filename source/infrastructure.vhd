@@ -21,7 +21,7 @@ ENTITY infrastructure IS
         reset_n_o      : OUT   std_logic;
         key_1_sync_o   : OUT   std_logic;
         gpio_26_sync_o : OUT   std_logic;
-        sw_17_0_sync_o : OUT   std_logic
+        sw_17_0_sync_o : OUT   std_logic_vector(17 downto 0)
       );
 END infrastructure;
 
@@ -67,16 +67,16 @@ BEGIN
     generic map (
       width      => 1 )
     port map (
-      signal_i => key_0_i,
-      signal_o => reset_n_o,
+      signal_i(0) => key_0_i,
+      signal_o(0) => reset_n_o,
       clk_12m  => clk_12m_int);
 
   sync_inst_2: synchronize
     generic map (
       width      => 1 )
     port map (
-      signal_i => key_1_i,
-      signal_o => key_1_synch_o,
+      signal_i(0) => key_1_i,
+      signal_o(0) => key_1_sync_o,
       clk_12m  => clk_12m_int);
 
   sync_inst_3: synchronize
@@ -84,15 +84,15 @@ BEGIN
       width      => 18 )
     port map (
       signal_i => sw_17_0_i,
-      signal_o => sw_17_0_synch_o,
+      signal_o => sw_17_0_sync_o,
       clk_12m  => clk_12m_int);
 
   sync_inst_4: synchronize
     generic map (
       width      => 1 )
     port map (
-      signal_i => gpio_26_i,
-      signal_o => gpio_26_synch_o,
+      signal_i(0) => gpio_26_i,
+      signal_o(0) => gpio_26_sync_o,
       clk_12m  => clk_12m_int);
   
 
