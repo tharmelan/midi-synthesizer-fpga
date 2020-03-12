@@ -79,6 +79,16 @@ architecture struct of synthi_top_tb is
   signal AUD_XCK  : std_logic;
   signal I2C_SDAT : std_logic;
   signal I2C_SCLK : std_logic;
+  signal reg_data0 : std_logic_vector(31 downto 0);
+  signal reg_data1 : std_logic_vector(31 downto 0);
+  signal reg_data2 : std_logic_vector(31 downto 0);
+  signal reg_data3 : std_logic_vector(31 downto 0);
+  signal reg_data4 : std_logic_vector(31 downto 0);
+  signal reg_data5 : std_logic_vector(31 downto 0);
+  signal reg_data6 : std_logic_vector(31 downto 0);
+  signal reg_data7 : std_logic_vector(31 downto 0);
+  signal reg_data8 : std_logic_vector(31 downto 0);
+  signal reg_data9 : std_logic_vector(31 downto 0);
 
   constant clock_freq   : natural := 50_000_000;
   constant clock_period : time    := 1000 ms/clock_freq;
@@ -99,11 +109,21 @@ begin  -- architecture struct
 
   slave: i2c_slave_bfm
   generic map (
-      verbose      => true )
+      verbose      => false )
   port map (
       AUD_XCK   => AUD_XCK,
       I2C_SDAT  => I2C_SDAT,
-      I2C_SCLK  => I2C_SCLK);
+      I2C_SCLK  => I2C_SCLK,
+      reg_data0 => reg_data0,
+      reg_data1 => reg_data1,
+      reg_data2 => reg_data2,
+      reg_data3 => reg_data3,
+      reg_data4 => reg_data4,
+      reg_data5 => reg_data5,
+      reg_data6 => reg_data6,
+      reg_data7 => reg_data7,
+      reg_data8 => reg_data8,
+      reg_data9 => reg_data9);
 
   readcmd : process
     -- This process loops through a file and reads one line
@@ -166,6 +186,26 @@ begin  -- architecture struct
         run_sim(tv);
       elsif cmd = string'("ini_cod") then
         ini_cod(tv, SW_17_0(2 downto 0), KEY_1);
+	  elsif cmd= string'("i2c_ch0") then
+	    gpo_chk(tv, reg_data0);
+	  elsif cmd= string'("i2c_ch1") then
+	    gpo_chk(tv, reg_data1);
+	  elsif cmd= string'("i2c_ch2") then
+	    gpo_chk(tv, reg_data2);
+	  elsif cmd= string'("i2c_ch3") then
+	    gpo_chk(tv, reg_data3);
+	  elsif cmd= string'("i2c_ch4") then
+	    gpo_chk(tv, reg_data4);
+	  elsif cmd= string'("i2c_ch5") then
+	    gpo_chk(tv, reg_data5);
+	  elsif cmd= string'("i2c_ch6") then
+	    gpo_chk(tv, reg_data6);
+	  elsif cmd= string'("i2c_ch7") then
+	    gpo_chk(tv, reg_data7);
+	  elsif cmd= string'("i2c_ch8") then
+	    gpo_chk(tv, reg_data8);
+	  elsif cmd= string'("i2c_ch9") then
+	    gpo_chk(tv, reg_data9);
 
         -- add further test commands below here
 

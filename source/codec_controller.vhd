@@ -46,10 +46,11 @@ BEGIN
   --------------------------------------------------
   -- PROCESS FOR COMB-INPUT LOGIC
   --------------------------------------------------
-  fsm_drive: PROCESS(initialize_i,ack_error_i,state,count)
+  fsm_drive: PROCESS(all)
   BEGIN
     -- Default statement
     next_state <= state;
+	next_count <= count;
     write_o <= '0';
 
     case state is
@@ -101,7 +102,7 @@ BEGIN
 
   with sw_sync_i select
     write_data_o <=
-    ("000" & std_logic_vector(count) & C_W8731_ANALOG_MUTE_LEFT(to_integer(unsigned(count))))  when "100",
+    ("000" & std_logic_vector(count) & C_W8731_ANALOG_MUTE_LEFT(to_integer(unsigned(count))))  when "101",
     ("000" & std_logic_vector(count) & C_W8731_ANALOG_MUTE_RIGHT(to_integer(unsigned(count)))) when "011",
     ("000" & std_logic_vector(count) & C_W8731_ANALOG_MUTE_BOTH(to_integer(unsigned(count)))) when "111",
     ("000" & std_logic_vector(count) & C_W8731_ANALOG_BYPASS(to_integer(unsigned(count)))) when "001",

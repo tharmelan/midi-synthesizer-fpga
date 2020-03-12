@@ -57,7 +57,7 @@ BEGIN
   
   takt_inst: modulo_divider
     generic map (
-      width      => 4 )
+      width      => 2 )
     port map (
       clk     => clk_50,
       reset_n => '1',
