@@ -13,6 +13,9 @@
 *.qws
 *.jdi
 *db
+*.bak
+*.vhd~
+
 
 # LaTeX
 *.aux
