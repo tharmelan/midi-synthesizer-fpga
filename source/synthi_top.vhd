@@ -33,7 +33,7 @@ entity synthi_top is
     GPIO_26   : in     std_logic;
     KEY_0     : in     std_logic;
     KEY_1     : in     std_logic;
-    SW_17_0   : in     std_logic_vector(17 downto 0);
+    SW	      : in     std_logic_vector(17 downto 0);
     AUD_XCK   : out    std_logic;
     I2C_SDAT  : inout  std_logic;
     I2C_SCLK  : out    std_logic
@@ -126,7 +126,7 @@ begin  -- architecture str
       clk_50         => CLOCK_50,
       key_0_i        => KEY_0,
       key_1_i        => KEY_1,
-      sw_17_0_i      => SW_17_0,
+      sw_17_0_i      => SW,
       gpio_26_i      => GPIO_26,
       clk_12m_o      => clock_12m_s,
       reset_n_o      => reset_n_s,

@@ -45,7 +45,7 @@ architecture struct of synthi_top_tb is
       GPIO_26  : in    std_logic;
       KEY_0    : in    std_logic;
       KEY_1    : in    std_logic;
-      SW_17_0  : in    std_logic_vector(17 downto 0);
+      SW       : in    std_logic_vector(17 downto 0);
       AUD_XCK  : out   std_logic;
       I2C_SDAT : inout std_logic;
       I2C_SCLK : out   std_logic);
@@ -75,7 +75,7 @@ architecture struct of synthi_top_tb is
   signal GPIO_26  : std_logic;
   signal KEY_0    : std_logic;
   signal KEY_1    : std_logic;
-  signal SW_17_0  : std_logic_vector(17 downto 0);
+  signal SW       : std_logic_vector(17 downto 0);
   signal AUD_XCK  : std_logic;
   signal I2C_SDAT : std_logic;
   signal I2C_SCLK : std_logic;
@@ -102,7 +102,7 @@ begin  -- architecture struct
       GPIO_26  => GPIO_26,
       KEY_0    => KEY_0,
       KEY_1    => KEY_1,
-      SW_17_0  => SW_17_0,
+      SW	   => SW,
       AUD_XCK  => AUD_XCK,
       I2C_SDAT => I2C_SDAT,
       I2C_SCLK => I2C_SCLK);
@@ -185,7 +185,7 @@ begin  -- architecture struct
       elsif cmd = string'("run_sim") then
         run_sim(tv);
       elsif cmd = string'("ini_cod") then
-        ini_cod(tv, SW_17_0(2 downto 0), KEY_1);
+        ini_cod(tv, SW(2 downto 0), KEY_1);
 	  elsif cmd= string'("i2c_ch0") then
 	    gpo_chk(tv, reg_data0);
 	  elsif cmd= string'("i2c_ch1") then

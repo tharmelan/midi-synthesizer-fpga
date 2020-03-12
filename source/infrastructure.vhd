@@ -75,7 +75,7 @@ BEGIN
     generic map (
       width      => 1 )
     port map (
-      signal_i(0) => key_1_i,
+      signal_i(0) => not(key_1_i),
       signal_o(0) => key_1_sync_o,
       clk_12m  => clk_12m_int);
 
