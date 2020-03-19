@@ -93,6 +93,18 @@ architecture rtl of i2s_master is
 	);
   end component shiftreg_p2s;
   
+  component shiftreg_s2p is
+    generic (
+      width      : positive);
+	PORT( 
+	  clk     		: IN    std_logic;
+	  shift_i		: IN    std_logic;
+  	  enable_i	    : IN    std_logic;
+	  ser_i       	: IN    std_logic;
+	  par_o 	    : OUT   std_logic_vector(width-1 downto 0)
+	);
+  end component shiftreg_p2s;
+  
   
 begin  -- architecture str
 
@@ -145,6 +157,26 @@ begin  -- architecture str
       enable_i 	=> BCLK_INT,
       par_i     => dacdat_pr_i,
       ser_o     => dacdat_s_r);
+	  
+	s2p_l: shiftreg_s2p
+    generic map (
+      width      => 16 )
+    port map (
+      clk       => clk_12m,
+      shift_i 	=> shift_l,
+      enable_i 	=> BCLK_INT,
+      par_o     => adcdat_pl_o,
+      ser_i     => adcdat_s_i);
+	  
+	s2p_r: shiftreg_s2p
+    generic map (
+      width      => 16 )
+    port map (
+      clk       => clk_12m,
+      shift_i 	=> shift_r,
+      enable_i 	=> BCLK_INT,
+      par_o     => adcdat_pr_o,
+      ser_i     => adcdat_s_i);
 	  
 -- Concurrent Assignments
 
