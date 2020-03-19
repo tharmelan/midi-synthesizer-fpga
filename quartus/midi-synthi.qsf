@@ -1950,6 +1950,12 @@ set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N_15
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N_15
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N_16
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N_16
+set_global_assignment -name VHDL_FILE ../source/shiftreg_s2p.vhd
+set_global_assignment -name VHDL_FILE ../source/shiftreg_p2s.vhd
+set_global_assignment -name VHDL_FILE ../source/path_control.vhd
+set_global_assignment -name VHDL_FILE ../source/i2s_master.vhd
+set_global_assignment -name VHDL_FILE ../source/i2s_decoder.vhd
+set_global_assignment -name VHDL_FILE ../source/counter.vhd
 set_global_assignment -name VHDL_FILE ../source/i2c_master.vhd
 set_global_assignment -name VHDL_FILE ../source/synthi_top.vhd
 set_global_assignment -name VHDL_FILE ../source/synchronize.vhd

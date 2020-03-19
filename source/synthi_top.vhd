@@ -41,8 +41,8 @@ entity synthi_top is
 	AUD_DACLRCK : out	 std_logic;
 	AUD_ADCLRCK : out	 std_logic;	
 	load_o		: out    std_logic;
-	AUD_DACDAT  : out	 std_logic_vector(15 downto 0);
-	AUD_ADCDAT  : in	 std_logic_vector(15 downto 0);
+	AUD_DACDAT  : out	 std_logic;
+	AUD_ADCDAT  : in	 std_logic
     );
 
 end entity synthi_top;

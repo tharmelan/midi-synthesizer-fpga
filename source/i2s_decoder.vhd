@@ -27,11 +27,10 @@ end i2s_decoder;
 architecture rtl of i2s_decoder is
 -- Signals & Constants Declaration 
 -------------------------------------------
-
+signal count 		: integer;
 -- Begin Architecture
 -------------------------------------------
 begin
-	signal count 	: integer;
 
   --------------------------------------------------
   -- PROCESS FOR COMBINATORIAL LOGIC
@@ -49,7 +48,7 @@ begin
 	when 0 => load <= '1';
 	when 1 to 16  => shift_l <= '1';
 	when 65 to 80 => shift_r <= '1';
-	when others;
+	when others => null;
 	end case;
 	
 	

@@ -20,7 +20,7 @@ BEGIN
 
 	comb_logic : PROCESS(all)
 	BEGIN
-		if (enable_i = '1' AND shift_i '1') then
+		if (enable_i = '1') AND (shift_i = '1') then
 			next_data <= ser_i & data(width-1 downto 1);
 		else
 			next_data <= data;

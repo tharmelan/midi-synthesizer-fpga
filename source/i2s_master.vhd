@@ -47,7 +47,7 @@ architecture rtl of i2s_master is
   signal load       : std_logic;
   signal shift_l    : std_logic;
   signal shift_r    : std_logic;
-  signal counter	: std_logic_vector(6 downto 0);
+  signal bit_count	: std_logic_vector(6 downto 0);
   signal dacdat_s_r : std_logic;
   signal dacdat_s_l : std_logic;
 
@@ -103,10 +103,10 @@ architecture rtl of i2s_master is
 	  ser_i       	: IN    std_logic;
 	  par_o 	    : OUT   std_logic_vector(width-1 downto 0)
 	);
-  end component shiftreg_p2s;
+  end component shiftreg_s2p;
   
   
-begin  -- architecture str
+begin  -- architecture rtl
 
   --PROCESSES
   
@@ -116,7 +116,7 @@ begin  -- architecture str
       width      => 1 )
     port map (
       clk     => clk_12m,
-      reset_n => '1',
+      reset_n => reset_n,
       clk_12m => BCLK_INT);
 	  
   bit_cntr: counter
@@ -125,12 +125,12 @@ begin  -- architecture str
     port map (
       clk       => clk_12m,
       clk_count => BCLK_INT,
-      reset_n   => '1',
-      counter   => counter);
+      reset_n   => reset_n,
+      counter   => bit_count);
 	  
   i2s_decoder_1: i2s_decoder
     port map (
-      bit_cntr_i => counter,
+      bit_cntr_i => bit_count,
       shift_l  	=> shift_l,
       shift_r   => shift_r,
       ws    	=> ws_o,
@@ -185,6 +185,6 @@ begin  -- architecture str
 	  dacdat_s_o <=      dacdat_s_l when ws_o = '0'
 				    else dacdat_s_r;
   
-end architecture str;
+end architecture rtl;
 
 -------------------------------------------------------------------------------

@@ -58,7 +58,7 @@ begin
   --------------------------------------------------
   -- CONCURRENT ASSIGNMENTS
   --------------------------------------------------
-	counter <= count;
+	counter <= std_logic_vector(count);
 
 -- End Architecture 
 ------------------------------------------- 

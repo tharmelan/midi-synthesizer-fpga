@@ -42,18 +42,16 @@ BEGIN
 	IF (load_i = '1') THEN
 		next_state <= par_i;
   	-- shift
-  	ELSE 
-		IF enable_i = '1' AND shift_i = '1' then
-			next_state <= '1' & state(width-1 downto 1);
-		END IF;
-  	END IF;
+  	ELSIF enable_i = '1' AND shift_i = '1' then
+		next_state <= '1' & state(width-1 downto 1);
+	END IF;
 	
   END PROCESS comb_logic;   
   
   --------------------------------------------------
   -- PROCESS FOR REGISTERS
   --------------------------------------------------
-  flip_flops : PROCESS(clk, set_n)
+  flip_flops : PROCESS(clk)
   BEGIN	
     IF rising_edge(clk) THEN
 		state <= next_state ;
