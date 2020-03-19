@@ -41,14 +41,20 @@ architecture struct of synthi_top_tb is
 
   component synthi_top is
     port (
-      CLOCK_50 : in    std_logic;
-      GPIO_26  : in    std_logic;
-      KEY_0    : in    std_logic;
-      KEY_1    : in    std_logic;
-      SW       : in    std_logic_vector(17 downto 0);
-      AUD_XCK  : out   std_logic;
-      I2C_SDAT : inout std_logic;
-      I2C_SCLK : out   std_logic);
+      CLOCK_50 		: in    std_logic;
+      GPIO_26  		: in    std_logic;
+      KEY_0    		: in    std_logic;
+      KEY_1    		: in    std_logic;
+      SW       		: in    std_logic_vector(17 downto 0);
+      AUD_XCK  		: out   std_logic;
+      I2C_SDAT 		: inout std_logic;
+      I2C_SCLK 		: out   std_logic;
+	  AUD_BCLK  	: out	std_logic;
+	  AUD_DACLRCK 	: out	std_logic;
+	  AUD_ADCLRCK 	: out	std_logic;	
+	  load_o		: out   std_logic;
+	  AUD_DACDAT	: out	std_logic;
+	  AUD_ADCDAT  	: in	std_logic);
   end component synthi_top;
 
   component i2c_slave_bfm is
@@ -71,14 +77,14 @@ architecture struct of synthi_top_tb is
   end component i2c_slave_bfm;
   
   -- component ports
-  signal CLOCK_50 : std_logic;
-  signal GPIO_26  : std_logic;
-  signal KEY_0    : std_logic;
-  signal KEY_1    : std_logic;
-  signal SW       : std_logic_vector(17 downto 0);
-  signal AUD_XCK  : std_logic;
-  signal I2C_SDAT : std_logic;
-  signal I2C_SCLK : std_logic;
+  signal CLOCK_50  : std_logic;
+  signal GPIO_26   : std_logic;
+  signal KEY_0     : std_logic;
+  signal KEY_1     : std_logic;
+  signal SW        : std_logic_vector(17 downto 0);
+  signal AUD_XCK   : std_logic;
+  signal I2C_SDAT  : std_logic;
+  signal I2C_SCLK  : std_logic;
   signal reg_data0 : std_logic_vector(31 downto 0);
   signal reg_data1 : std_logic_vector(31 downto 0);
   signal reg_data2 : std_logic_vector(31 downto 0);
@@ -89,6 +95,14 @@ architecture struct of synthi_top_tb is
   signal reg_data7 : std_logic_vector(31 downto 0);
   signal reg_data8 : std_logic_vector(31 downto 0);
   signal reg_data9 : std_logic_vector(31 downto 0);
+  
+  signal AUD_DACLRCK 	: std_logic;
+  signal AUD_ADCLRCK 	: std_logic;
+  signal AUD_DACDAT 	: std_logic;
+  signal AUD_ADCDAT  	: std_logic;
+  signal AUD_BCLK	  	: std_logic;
+  signal dacdat_check	: std_logic_vector(31 downto 0);
+  signal switch 		: std_logic_vector(31 downto 0);
 
   constant clock_freq   : natural := 50_000_000;
   constant clock_period : time    := 1000 ms/clock_freq;
@@ -98,14 +112,21 @@ begin  -- architecture struct
   -- component instantiation
   DUT: synthi_top
     port map (
-      CLOCK_50 => CLOCK_50,
-      GPIO_26  => GPIO_26,
-      KEY_0    => KEY_0,
-      KEY_1    => KEY_1,
-      SW	   => SW,
-      AUD_XCK  => AUD_XCK,
-      I2C_SDAT => I2C_SDAT,
-      I2C_SCLK => I2C_SCLK);
+      CLOCK_50 		=> CLOCK_50,
+      GPIO_26  		=> GPIO_26,
+      KEY_0   	 	=> KEY_0,
+      KEY_1    		=> KEY_1,
+      SW	   		=> SW,
+      AUD_XCK  		=> AUD_XCK,
+      I2C_SDAT 		=> I2C_SDAT,
+      I2C_SCLK 		=> I2C_SCLK,
+	  AUD_BCLK  	=> AUD_BCLK,
+	  AUD_DACLRCK	=> AUD_DACLRCK,
+	  AUD_ADCLRCK	=> AUD_ADCLRCK,
+	  load_o		=> OPEN,
+	  AUD_DACDAT	=> AUD_DACDAT,
+	  AUD_ADCDAT 	=> AUD_ADCDAT
+	  );
 
   slave: i2c_slave_bfm
   generic map (
@@ -184,6 +205,8 @@ begin  -- architecture struct
         rst_sim(tv, key_0);
       elsif cmd = string'("run_sim") then
         run_sim(tv);
+      elsif cmd = string'("gpi_sim") then
+        gpi_sim(tv, switch);
       elsif cmd = string'("ini_cod") then
         ini_cod(tv, SW(2 downto 0), KEY_1);
 	  elsif cmd= string'("i2c_ch0") then
@@ -206,6 +229,10 @@ begin  -- architecture struct
 	    gpo_chk(tv, reg_data8);
 	  elsif cmd= string'("i2c_ch9") then
 	    gpo_chk(tv, reg_data9);
+	  elsif cmd = string'("i2s_sim") then
+		i2s_sim(tv, AUD_ADCLRCK, AUD_BCLK, AUD_ADCDAT);
+	  elsif cmd = string'("i2s_chk") then
+		i2s_chk(tv,AUD_ADCLRCK,AUD_BCLK,AUD_DACDAT,dacdat_check);
 
         -- add further test commands below here
 
@@ -235,6 +262,9 @@ begin  -- architecture struct
     wait for clock_period/2;
 
   end process clkgen;
+  
+  
+  SW(3) <= switch(3);
 
   
 

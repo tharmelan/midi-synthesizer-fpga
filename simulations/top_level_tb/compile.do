@@ -14,6 +14,13 @@ vcom -2008 -explicit -work work ../../../source/infrastructure.vhd
 vcom -2008 -explicit -work work ../../../source/modulo_divider.vhd
 vcom -2008 -explicit -work work ../../../source/synchronize.vhd
 
+vcom -2008 -explicit -work work ../../../source/i2s_decoder.vhd
+vcom -2008 -explicit -work work ../../../source/counter.vhd
+vcom -2008 -explicit -work work ../../../source/i2s_master.vhd
+vcom -2008 -explicit -work work ../../../source/shiftreg_p2s.vhd
+vcom -2008 -explicit -work work ../../../source/shiftreg_s2p.vhd
+vcom -2008 -explicit -work work ../../../source/path_control.vhd
+
 
 vcom -2008 -explicit -work work ../../../source/synthi_top.vhd
 vcom -2008 -explicit -work work ../../../source/synthi_top_tb.vhd

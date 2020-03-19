@@ -68,8 +68,6 @@ architecture str of synthi_top is
   signal dacdat_pr		 : std_logic_vector(15 downto 0);
   signal adcdat_pl		 : std_logic_vector(15 downto 0);
   signal adcdat_pr		 : std_logic_vector(15 downto 0);
-
-  -- Fragen: Was muss alles reseted werden, wenn reset? 
   
   -- Milestone 3
   signal dds_l		 	 : std_logic_vector(15 downto 0);

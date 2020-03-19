@@ -30,23 +30,12 @@ ARCHITECTURE rtl OF path_control IS
 -- Begin Architecture
 -------------------------------------------
 BEGIN
-
-  --------------------------------------------------
-  -- PROCESS FOR COMBINATORIAL LOGIC
-  --------------------------------------------------
-  comb_logic: PROCESS(loop_back_i)
-  BEGIN	
-	IF (loop_back_i = '1') THEN
-		dacdat_pl_o <= adcdat_pl_i;
-		dacdat_pr_o <= adcdat_pr_i;
-  	ELSE 
-		dacdat_pl_o <= dds_l_i;
-		dacdat_pr_o <= dds_r_i;
-  	END IF;
 	
-  END PROCESS comb_logic;   
-  
-  
+	dacdat_pl_o <= 		adcdat_pl_i WHEN loop_back_i = '1'
+				   ELSE dds_l_i;
+					   
+	dacdat_pr_o <= 		adcdat_pr_i WHEN loop_back_i = '1'
+				   ELSE dds_r_i;
   
  -- End Architecture 
 ------------------------------------------- 
