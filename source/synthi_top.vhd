@@ -29,14 +29,20 @@ entity synthi_top is
 
 
   port (
-    CLOCK_50  : in     std_logic;
-    GPIO_26   : in     std_logic;
-    KEY_0     : in     std_logic;
-    KEY_1     : in     std_logic;
-    SW	      : in     std_logic_vector(17 downto 0);
-    AUD_XCK   : out    std_logic;
-    I2C_SDAT  : inout  std_logic;
-    I2C_SCLK  : out    std_logic
+    CLOCK_50  	: in     std_logic;
+    GPIO_26   	: in     std_logic;
+    KEY_0     	: in     std_logic;
+    KEY_1     	: in     std_logic;
+    SW	      	: in     std_logic_vector(17 downto 0);
+    AUD_XCK   	: out    std_logic;
+    I2C_SDAT  	: inout  std_logic;
+    I2C_SCLK  	: out    std_logic;
+	AUD_BCLK  	: out	 std_logic;
+	AUD_DACLRCK : out	 std_logic;
+	AUD_ADCLRCK : out	 std_logic;	
+	load_o		: out    std_logic;
+	AUD_DACDAT  : out	 std_logic_vector(15 downto 0);
+	AUD_ADCDAT  : in	 std_logic_vector(15 downto 0);
     );
 
 end entity synthi_top;
@@ -57,6 +63,17 @@ architecture str of synthi_top is
   signal write_data      : std_logic_vector(15 downto 0);
   signal write_done      : std_logic;
   signal ack_error       : std_logic;
+  signal ws		         : std_logic;
+  signal dacdat_pl		 : std_logic_vector(15 downto 0);
+  signal dacdat_pr		 : std_logic_vector(15 downto 0);
+  signal adcdat_pl		 : std_logic_vector(15 downto 0);
+  signal adcdat_pr		 : std_logic_vector(15 downto 0);
+
+  -- Fragen: Was muss alles reseted werden, wenn reset? 
+  
+  -- Milestone 3
+  signal dds_l		 	 : std_logic_vector(15 downto 0);
+  signal dds_r		 	 : std_logic_vector(15 downto 0);
   
 
   
@@ -98,14 +115,64 @@ architecture str of synthi_top is
       write_done_o : out   std_logic;
       ack_error_o  : out   std_logic);
   end component i2c_master;
+  
+  component i2s_master is
+    port (
+      clk_12m	  : in     std_logic;
+	  dacdat_pl_i : in     std_logic_vector(15 downto 0);
+      dacdat_pr_i : in     std_logic_vector(15 downto 0);
+      dacdat_s_o  : out    std_logic;
+      reset_n     : in     std_logic;
+      adcdat_pl_o : out    std_logic_vector(15 downto 0);
+      adcdat_pr_o : out    std_logic_vector(15 downto 0);
+      load_o      : out    std_logic;
+      adcdat_s_i  : in     std_logic;
+      bclk_o      : out    std_logic;
+      ws_o        : out    std_logic);
+  end component i2s_master;
+  
+  component path_control is
+    port (
+      loop_back_i	  : IN    std_logic;
+	  dds_l_i 	      : IN    std_logic_vector(15 downto 0);
+      dds_r_i 	      : IN    std_logic_vector(15 downto 0);
+      adcdat_pl_i 	  : IN    std_logic_vector(15 downto 0);
+      adcdat_pr_i 	  : IN    std_logic_vector(15 downto 0);
+      dacdat_pl_o     : OUT   std_logic_vector(15 downto 0);
+      dacdat_pr_o     : OUT   std_logic_vector(15 downto 0));
+  end component path_control;
 
 begin  -- architecture str
 
   -----------------------------------------------------------------------------
   -- Component instantiations
   -----------------------------------------------------------------------------
-
-  AUD_XCK <= clock_12m_s;
+  
+  -- instance "i2s_master_1"
+  i2s_master_1: i2s_master
+    port map (
+      clk_12m      	=> clock_12m_s,
+      dacdat_pl_i 	=> dacdat_pl,
+      dacdat_pr_i   => dacdat_pr,
+      dacdat_s_o 	=> AUD_DACDAT,
+      reset_n  		=> reset_n_s,
+      adcdat_pl_o   => adcdat_pl,
+      adcdat_pr_o   => adcdat_pr,
+      load_o 		=> OPEN,
+      bclk_o 		=> AUD_BCLK,
+      ws_o 			=> ws,
+      adcdat_s_i    => AUD_ADCDAT);
+	  
+  -- instance "path_control_1"
+  path_control_1: path_control
+    port map (
+      loop_back_i   => sw_sync(3),
+      dds_l_i 		=> dds_l,
+      dds_r_i   	=> dds_r,
+      adcdat_pl_i	=> adcdat_pl,
+      adcdat_pr_i  	=> adcdat_pr,
+      dacdat_pl_o  	=> dacdat_pl,
+      dacdat_pr_o  	=> dacdat_pr);
   
   -- instance "codec_controller_1"
   codec_controller_1: codec_controller
@@ -145,6 +212,10 @@ begin  -- architecture str
       scl_o        => I2C_SCLK,
       write_done_o => write_done,
       ack_error_o  => ack_error);
+	  
+	  AUD_XCK 	  <= clock_12m_s;
+	  AUD_DACLRCK <= ws;
+	  AUD_ADCLRCK <= ws;
 
 end architecture str;
 

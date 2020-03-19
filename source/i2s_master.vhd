@@ -28,7 +28,7 @@ entity i2s_master is
     dacdat_pl_i : in     std_logic_vector(15 downto 0);
     dacdat_pr_i : in     std_logic_vector(15 downto 0);
     dacdat_s_o  : out    std_logic;
-    init_n      : in     std_logic;
+    reset_n     : in     std_logic;
     adcdat_pl_o : out    std_logic_vector(15 downto 0);
     adcdat_pr_o : out    std_logic_vector(15 downto 0);
     load_o      : out    std_logic;
@@ -119,7 +119,7 @@ begin  -- architecture str
       reset_n => '1',
       clk_12m => BCLK_INT);
 	  
-	bit_cntr: counter
+  bit_cntr: counter
     generic map (
       width      => 7 )
     port map (
@@ -128,7 +128,7 @@ begin  -- architecture str
       reset_n   => '1',
       counter   => counter);
 	  
-	i2s_decoder: i2s_decoder
+  i2s_decoder_1: i2s_decoder
     port map (
       bit_cntr_i => counter,
       shift_l  	=> shift_l,
@@ -136,7 +136,7 @@ begin  -- architecture str
       ws    	=> ws_o,
       load    	=> load);
 	  
-	p2s_l: shiftreg_p2s
+  p2s_l: shiftreg_p2s
     generic map (
       width      => 16 )
     port map (
@@ -147,7 +147,7 @@ begin  -- architecture str
       par_i     => dacdat_pl_i,
       ser_o     => dacdat_s_l);
 	  
-	p2s_r: shiftreg_p2s
+  p2s_r: shiftreg_p2s
     generic map (
       width      => 16 )
     port map (
@@ -158,7 +158,7 @@ begin  -- architecture str
       par_i     => dacdat_pr_i,
       ser_o     => dacdat_s_r);
 	  
-	s2p_l: shiftreg_s2p
+  s2p_l: shiftreg_s2p
     generic map (
       width      => 16 )
     port map (
@@ -168,7 +168,7 @@ begin  -- architecture str
       par_o     => adcdat_pl_o,
       ser_i     => adcdat_s_i);
 	  
-	s2p_r: shiftreg_s2p
+  s2p_r: shiftreg_s2p
     generic map (
       width      => 16 )
     port map (
