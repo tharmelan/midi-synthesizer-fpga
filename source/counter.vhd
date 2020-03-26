@@ -34,24 +34,25 @@ begin
   --------------------------------------------------
   -- PROCESS FOR COMBINATORIAL LOGIC
   --------------------------------------------------
-  comb_logic : process(count)
+  comb_logic : process(count,clk_count)
   begin
-    -- increment        
-    next_count <= count + 1;
+	next_count <= count;
+    
+	-- increment        
+	if clk_count = '1' then 
+		next_count <= count + 1;
+	end if;
   end process comb_logic;
 
   --------------------------------------------------
   -- PROCESS FOR REGISTERS
   --------------------------------------------------
-  flip_flops : process(clk,clk_count, reset_n)
+  flip_flops : process(clk, reset_n)
   begin
     if reset_n = '0' then
       count <= to_unsigned(0, width);
     elsif rising_edge(clk) then
-		-- clk_count ist verzögert, desshalb haben wir uns für clk_count high entschieden.
-		if clk_count = '1' then 
-			count <= next_count;
-		end if;
+		count <= next_count;
     end if;
   end process flip_flops;
 

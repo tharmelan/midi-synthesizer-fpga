@@ -2,3 +2,7 @@ rst_sim
 gpi_sim 00 00 00 08
 i2s_sim 11 22 33 44
 i2s_chk 11 22 33 44
+
+gpi_sim 00 00 00 00
+i2s_sim 11 22 33 44
+i2s_chk 00 00 00 00

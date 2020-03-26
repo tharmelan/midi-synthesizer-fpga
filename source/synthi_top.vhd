@@ -70,8 +70,8 @@ architecture str of synthi_top is
   signal adcdat_pr		 : std_logic_vector(15 downto 0);
   
   -- Milestone 3
-  signal dds_l		 	 : std_logic_vector(15 downto 0);
-  signal dds_r		 	 : std_logic_vector(15 downto 0);
+  signal dds_l		 	 : std_logic_vector(15 downto 0) := (others => '0');
+  signal dds_r		 	 : std_logic_vector(15 downto 0) := (others => '0');
   
 
   
