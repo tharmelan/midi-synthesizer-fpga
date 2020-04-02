@@ -37,15 +37,15 @@ entity synthi_top is
     AUD_XCK   	: out    std_logic;
     I2C_SDAT  	: inout  std_logic;
     I2C_SCLK  	: out    std_logic;
-	AUD_BCLK  	: out	 std_logic;
-	AUD_DACLRCK : out	 std_logic;
-	AUD_ADCLRCK : out	 std_logic;	
-	load_o		: out    std_logic;
-	AUD_DACDAT  : out	 std_logic;
-	AUD_ADCDAT  : in	 std_logic;
-	
-	LEDG_0		: out	std_logic;
-	LEDR_3		: out std_logic
+		AUD_BCLK  	: out	 std_logic;
+		AUD_DACLRCK : out	 std_logic;
+		AUD_ADCLRCK : out	 std_logic;	
+		load_o			: out    std_logic;
+		AUD_DACDAT  : out	 std_logic;
+		AUD_ADCDAT  : in	 std_logic;
+		
+		LEDG_0		: out	std_logic;
+		LEDR_3		: out std_logic
     );
 
 end entity synthi_top;
@@ -75,8 +75,6 @@ architecture str of synthi_top is
   -- Milestone 3
   signal dds_l		 	 : std_logic_vector(15 downto 0) := (others => '0');
   signal dds_r		 	 : std_logic_vector(15 downto 0) := (others => '0');
-  
-
   
   component codec_controller is
     port (
@@ -119,8 +117,8 @@ architecture str of synthi_top is
   
   component i2s_master is
     port (
-      clk_12m	  : in     std_logic;
-	  dacdat_pl_i : in     std_logic_vector(15 downto 0);
+      clk_12m	  	: in     std_logic;
+			dacdat_pl_i : in     std_logic_vector(15 downto 0);
       dacdat_pr_i : in     std_logic_vector(15 downto 0);
       dacdat_s_o  : out    std_logic;
       reset_n     : in     std_logic;
@@ -134,14 +132,25 @@ architecture str of synthi_top is
   
   component path_control is
     port (
-      loop_back_i	  : IN    std_logic;
-	  dds_l_i 	      : IN    std_logic_vector(15 downto 0);
+      loop_back_i	  	: IN    std_logic;
+			dds_l_i 	      : IN    std_logic_vector(15 downto 0);
       dds_r_i 	      : IN    std_logic_vector(15 downto 0);
       adcdat_pl_i 	  : IN    std_logic_vector(15 downto 0);
       adcdat_pr_i 	  : IN    std_logic_vector(15 downto 0);
       dacdat_pl_o     : OUT   std_logic_vector(15 downto 0);
       dacdat_pr_o     : OUT   std_logic_vector(15 downto 0));
   end component path_control;
+	
+	component tone_generator is
+    port (
+      clk_12m	    	: in     std_logic;
+			reset_n     	: in     std_logic;
+			note_vector  	: in     std_logic_vector(N_CUM-1 downto 0);
+			tone_on_i			: in     std_logic;
+			load_i      	: in     std_logic;
+			attenu_i			: in     std_logic_vector(2 downto 0);
+			dds_o       	: out    std_logic_vector(N_AUDIO-1 downto 0));
+  end component tone_generator;
 
 begin  -- architecture str
 
@@ -213,7 +222,19 @@ begin  -- architecture str
       scl_o        => I2C_SCLK,
       write_done_o => write_done,
       ack_error_o  => ack_error);
+			
+	tone_gen: tone_generator
+    port map (
+      clk_12m     => clk_12m,
+      reset_n     => reset_n,
+      note_vector => sw_sync(10 downto 4),
+      tone_on_i   => sw_sync(15),
+      load_i      => load_o,
+      attenu_i    => sw_sync(17 downto 16),
+      dds_o 	   	=> dds_r);
 	  
+		-- linker kanal hat immer das gleiche wie rechts
+		dds_l				<= dds_r;
 	  AUD_XCK 	  <= clock_12m_s;
 	  AUD_DACLRCK <= ws;
 	  AUD_ADCLRCK <= ws;

@@ -1950,6 +1950,9 @@ set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N_15
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N_15
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N_16
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N_16
+set_global_assignment -name VHDL_FILE ../source/MS3_tone_gen/tone_generator.vhd
+set_global_assignment -name VHDL_FILE ../source/MS3_tone_gen/tone_gen_pkg.vhd
+set_global_assignment -name VHDL_FILE ../source/MS3_tone_gen/dds.vhd
 set_global_assignment -name VHDL_FILE ../source/shiftreg_s2p.vhd
 set_global_assignment -name VHDL_FILE ../source/shiftreg_p2s.vhd
 set_global_assignment -name VHDL_FILE ../source/path_control.vhd
