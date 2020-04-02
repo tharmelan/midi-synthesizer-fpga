@@ -23,6 +23,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library work;
+use work.tone_gen_pkg.all;
+
 -------------------------------------------------------------------------------
 
 entity synthi_top is
@@ -66,7 +69,8 @@ architecture str of synthi_top is
   signal write_data      : std_logic_vector(15 downto 0);
   signal write_done      : std_logic;
   signal ack_error       : std_logic;
-  signal ws		         : std_logic;
+  signal ws		          : std_logic;
+  signal load_s          : std_logic;
   signal dacdat_pl		 : std_logic_vector(15 downto 0);
   signal dacdat_pr		 : std_logic_vector(15 downto 0);
   signal adcdat_pl		 : std_logic_vector(15 downto 0);
@@ -145,7 +149,7 @@ architecture str of synthi_top is
     port (
       clk_12m	    	: in     std_logic;
 			reset_n     	: in     std_logic;
-			note_vector  	: in     std_logic_vector(N_CUM-1 downto 0);
+			note_vector  	: in     std_logic_vector(6 downto 0);
 			tone_on_i			: in     std_logic;
 			load_i      	: in     std_logic;
 			attenu_i			: in     std_logic_vector(2 downto 0);
@@ -168,7 +172,7 @@ begin  -- architecture str
       reset_n  		=> reset_n_s,
       adcdat_pl_o   => adcdat_pl,
       adcdat_pr_o   => adcdat_pr,
-      load_o 		=> OPEN,
+      load_o 		=> load_s,
       bclk_o 		=> AUD_BCLK,
       ws_o 			=> ws,
       adcdat_s_i    => AUD_ADCDAT);
@@ -225,12 +229,12 @@ begin  -- architecture str
 			
 	tone_gen: tone_generator
     port map (
-      clk_12m     => clk_12m,
-      reset_n     => reset_n,
+      clk_12m     => clock_12m_s,
+      reset_n     => reset_n_s,
       note_vector => sw_sync(10 downto 4),
       tone_on_i   => sw_sync(15),
-      load_i      => load_o,
-      attenu_i    => sw_sync(17 downto 16),
+      load_i      => load_s,
+      attenu_i    => sw_sync(17 downto 16) & '0',
       dds_o 	   	=> dds_r);
 	  
 		-- linker kanal hat immer das gleiche wie rechts
@@ -238,6 +242,7 @@ begin  -- architecture str
 	  AUD_XCK 	  <= clock_12m_s;
 	  AUD_DACLRCK <= ws;
 	  AUD_ADCLRCK <= ws;
+	  load_o 	  <= load_s;
 	  
 	  LEDG_0 <= sw_sync(3);
 	  LEDR_3 <= SW(3);

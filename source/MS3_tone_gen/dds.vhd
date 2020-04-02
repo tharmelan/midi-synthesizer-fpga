@@ -19,7 +19,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 library work;
-use work.tone_gen_pgk.all;
+use work.tone_gen_pkg.all;
 
 -------------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ begin  -- architecture rtl
   lut_addr	 <= to_integer(count(N_CUM-1 downto N_CUM-N_LUT));
   
   --Lookup the value of a sinus at specific phase
-  lut_val	 <= to_signed(lut_sinus(lut_addr), N_AUDIO);
+  lut_val	 <= to_signed(LUT(lut_addr), N_AUDIO);
   
 	
   --Decrese volume of output
