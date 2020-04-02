@@ -22,10 +22,10 @@ entity i2s_decoder is
        );
 end i2s_decoder;
 
--- Architecture Declaration 
+-- Architecture Declarationï¿½
 -------------------------------------------
 architecture rtl of i2s_decoder is
--- Signals & Constants Declaration 
+-- Signals & Constants Declarationï¿½
 -------------------------------------------
 signal count 		: integer;
 -- Begin Architecture
@@ -35,7 +35,7 @@ begin
   --------------------------------------------------
   -- PROCESS FOR COMBINATORIAL LOGIC
   --------------------------------------------------
-  comb_logic : process(bit_cntr_i)
+  comb_logic : process(bit_cntr_i, count)				-- bst -- added count to sensitivity list 
   begin
 	count <= to_integer(unsigned(bit_cntr_i));
   

@@ -42,7 +42,10 @@ entity synthi_top is
 	AUD_ADCLRCK : out	 std_logic;	
 	load_o		: out    std_logic;
 	AUD_DACDAT  : out	 std_logic;
-	AUD_ADCDAT  : in	 std_logic
+	AUD_ADCDAT  : in	 std_logic;
+	
+	LEDG_0		: out	std_logic;
+	LEDR_3		: out std_logic
     );
 
 end entity synthi_top;
@@ -214,6 +217,9 @@ begin  -- architecture str
 	  AUD_XCK 	  <= clock_12m_s;
 	  AUD_DACLRCK <= ws;
 	  AUD_ADCLRCK <= ws;
+	  
+	  LEDG_0 <= sw_sync(3);
+	  LEDR_3 <= SW(3);
 
 end architecture str;
 
