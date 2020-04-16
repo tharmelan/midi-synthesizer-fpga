@@ -76,14 +76,6 @@ begin  -- architecture rtl
 	
   --Decrese volume of output
 	dds_s <= to_integer(shift_right(lut_val,to_integer(unsigned(attenu_i))));
-	
-  --case to_integer(unsigned(attenu_i)) is 
-	--when 0   => dds_s <= to_integer(lut_val);    
-	--when 1   => dds_s <= to_integer(shift_right(lut_val,1));    
-	--when 2   => dds_s <= to_integer(shift_right(lut_val,2)) 
-	--when 3   => dds_s <= to_integer(shift_right(lut_val,4))
-	--when others => 
-  --end case;
   
   dds_o 	 <=  std_logic_vector(to_signed(dds_s, dds_o'length)) when tone_on_i = '1'
 							 else (others => '0');

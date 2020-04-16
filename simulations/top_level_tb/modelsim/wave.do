@@ -1,26 +1,12 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate /synthi_top_tb/DUT/clock_12m_s
-add wave -noupdate /synthi_top_tb/DUT/ws
-add wave -noupdate /synthi_top_tb/DUT/adcdat_pr
-add wave -noupdate /synthi_top_tb/DUT/adcdat_pl
-add wave -noupdate /synthi_top_tb/DUT/dacdat_pl
-add wave -noupdate /synthi_top_tb/DUT/dacdat_pr
-add wave -noupdate /synthi_top_tb/DUT/load_o
-add wave -noupdate /synthi_top_tb/DUT/AUD_BCLK
-add wave -noupdate /synthi_top_tb/SW(3)
-add wave -noupdate /synthi_top_tb/DUT/i2s_master_1/i2s_decoder_1/shift_l
-add wave -noupdate /synthi_top_tb/DUT/i2s_master_1/i2s_decoder_1/shift_r
-add wave -noupdate /synthi_top_tb/DUT/i2s_master_1/i2s_decoder_1/bit_cntr_i
-add wave -noupdate /synthi_top_tb/DUT/path_control_1/adcdat_pl_i
-add wave -noupdate /synthi_top_tb/DUT/path_control_1/adcdat_pr_i
-add wave -noupdate /synthi_top_tb/DUT/path_control_1/dacdat_pl_o
-add wave -noupdate /synthi_top_tb/DUT/path_control_1/dacdat_pr_o
-add wave -noupdate /synthi_top_tb/DUT/path_control_1/loop_back_i
+add wave -noupdate /synthi_top_tb/DUT/tone_gen/phi_increment
+add wave -noupdate -format Analog-Step -height 456 -max 4094.9999999999995 -min -4096.0 -radix decimal /synthi_top_tb/DUT/tone_gen/dds_o
+add wave -noupdate /synthi_top_tb/SW
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {0 ns} 0}
-quietly wave cursor active 1
-configure wave -namecolwidth 274
+WaveRestoreCursors {{Cursor 1} {590 ns} 0} {{Cursor 2} {1118854 ns} 0}
+quietly wave cursor active 2
+configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
@@ -32,6 +18,6 @@ configure wave -gridoffset 0
 configure wave -gridperiod 1
 configure wave -griddelta 40
 configure wave -timeline 0
-configure wave -timelineunits ns
+configure wave -timelineunits ms
 update
-WaveRestoreZoom {0 ns} {57320 ns}
+WaveRestoreZoom {0 ns} {1376655 ns}

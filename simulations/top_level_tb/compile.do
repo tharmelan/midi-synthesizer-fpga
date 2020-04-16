@@ -21,6 +21,12 @@ vcom -2008 -explicit -work work ../../../source/shiftreg_p2s.vhd
 vcom -2008 -explicit -work work ../../../source/shiftreg_s2p.vhd
 vcom -2008 -explicit -work work ../../../source/path_control.vhd
 
+#MS3
+
+vcom -2008 -explicit -work work ../../../source/MS3_tone_gen/tone_gen_pkg.vhd
+vcom -2008 -explicit -work work ../../../source/MS3_tone_gen/dds.vhd
+vcom -2008 -explicit -work work ../../../source/MS3_tone_gen/tone_generator.vhd
+
 
 vcom -2008 -explicit -work work ../../../source/synthi_top.vhd
 vcom -2008 -explicit -work work ../../../source/synthi_top_tb.vhd
