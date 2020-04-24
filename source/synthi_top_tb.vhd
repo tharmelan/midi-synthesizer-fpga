@@ -207,8 +207,6 @@ begin  -- architecture struct
         run_sim(tv);
       elsif cmd = string'("gpi_sim") then
         gpi_sim(tv, switch);
-				--SW <= switch(17 downto 0);
-				SW <= "001000010100010000";
       elsif cmd = string'("ini_cod") then
         ini_cod(tv, SW(2 downto 0), KEY_1);
 	  elsif cmd= string'("i2c_ch0") then
@@ -255,6 +253,8 @@ begin  -- architecture struct
     wait; -- to avoid infinite loop simulator warning
 
   end process;
+	
+	SW <= switch(17 downto 0);
 
   clkgen : process
   begin

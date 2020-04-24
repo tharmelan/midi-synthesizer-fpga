@@ -7,10 +7,10 @@ GENERIC (width		: positive  := 4 );
 	PORT( clk,reset_n,enable_i,ser_i : IN   std_logic;
 	      par_o            : OUT  std_logic_vector(width - 1 downto 0)
 	    );
-END shiftreg_s2p;
+END shiftreg_s2p_ms4;
 
 
-ARCHITECTURE rtl OF shiftreg_s2p IS
+ARCHITECTURE rtl OF shiftreg_s2p_ms4 IS
 signal data, next_data: std_logic_vector(width-1 downto 0);
 
 BEGIN

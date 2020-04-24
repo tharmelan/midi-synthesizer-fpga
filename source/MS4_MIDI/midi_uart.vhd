@@ -33,7 +33,7 @@ entity midi_uart is
     reset_n     	: in std_logic;
     ser_data_i  	: in std_logic;
 		data_valid_o	: out std_logic;
-		par_data_o		: out std_logic_vector(7 downto 0);
+		par_data_o		: out std_logic_vector(7 downto 0)
     );
 
 end entity midi_uart;
@@ -83,7 +83,7 @@ architecture str of midi_uart is
     port (
       clk, reset_n, enable_i, ser_i : IN  std_logic;
       par_o                         : OUT std_logic_vector(width - 1 downto 0));
-  end component shiftreg_s2p;
+  end component shiftreg_s2p_ms4;
 
   component uart_controller_fsm is
     port (
@@ -136,7 +136,7 @@ begin  -- architecture str
   -- instance "uart_controller_fsm_1"
   uart_controller_fsm_1: uart_controller_fsm
     port map (
-      clk          => clock,
+      clk          => clk,
       reset_n      => reset_n,
       baud_tick_i  => baud_tick_t,
       start_i      => fall,

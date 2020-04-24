@@ -64,6 +64,7 @@ architecture str of synthi_top is
   signal key_1_sync      : std_logic;
   signal sw_sync         : std_logic_vector(17 downto 0);
   signal reset_n_s       : std_logic;
+	signal gpio_26_sync    : std_logic;
   signal clock_12m_s     : std_logic;
   signal write_s         : std_logic;
   signal write_data      : std_logic_vector(15 downto 0);
@@ -79,6 +80,13 @@ architecture str of synthi_top is
   -- Milestone 3
   signal dds_l		 	 : std_logic_vector(15 downto 0) := (others => '0');
   signal dds_r		 	 : std_logic_vector(15 downto 0) := (others => '0');
+	
+	--Milestone 4
+	signal midi_data_s    			: std_logic_vector(7 downto 0);
+	signal midi_data_valid_s    : std_logic;
+	signal note_array						: t_tone_array;
+	signal velocity_array				: t_tone_array;
+	signal note_on_array				: t_note_on;
   
   component codec_controller is
     port (
@@ -147,14 +155,36 @@ architecture str of synthi_top is
 	
 	component tone_generator is
     port (
-      clk_12m	    	: in     std_logic;
-			reset_n     	: in     std_logic;
-			note_vector  	: in     std_logic_vector(6 downto 0);
-			tone_on_i			: in     std_logic;
-			load_i      	: in     std_logic;
-			attenu_i			: in     std_logic_vector(2 downto 0);
-			dds_o       	: out    std_logic_vector(N_AUDIO-1 downto 0));
+      clk_12m	    	 : in     std_logic;
+			reset_n     	 : in     std_logic;
+			tone_on_i			 : in     std_logic;
+			load_i      	 : in     std_logic;
+			note_array  	 : in     t_tone_array;
+			velocity_array : in     t_tone_array;
+			note_on_array  : in 		t_note_on;
+			dds_o       	 : out    std_logic_vector(N_AUDIO-1 downto 0));
   end component tone_generator;
+	
+	component midi_controller IS
+  PORT( clk,reset_n  : IN  std_logic;
+        midi_data_i  : IN  std_logic_vector(7 downto 0);
+        data_valid_i : IN  std_logic;
+				note_o			 : OUT t_tone_array;
+				velocity_o	 : OUT t_tone_array;
+				note_on_o 	 : OUT t_note_on
+      );
+	END component midi_controller;
+
+	component midi_uart is
+  port (
+    clk 					: in std_logic;
+    reset_n     	: in std_logic;
+    ser_data_i  	: in std_logic;
+		data_valid_o	: out std_logic;
+		par_data_o		: out std_logic_vector(7 downto 0)
+  );
+	end component midi_uart;
+
 
 begin  -- architecture str
 
@@ -212,7 +242,7 @@ begin  -- architecture str
       clk_12m_o      => clock_12m_s,
       reset_n_o      => reset_n_s,
       key_1_sync_o   => key_1_sync,
-      gpio_26_sync_o => OPEN,
+      gpio_26_sync_o => gpio_26_sync,
       sw_17_0_sync_o => sw_sync);
 
   -- instance "i2c_master_1"
@@ -229,13 +259,34 @@ begin  -- architecture str
 			
 	tone_gen: tone_generator
     port map (
-      clk_12m     => clock_12m_s,
-      reset_n     => reset_n_s,
-      note_vector => sw_sync(10 downto 4),
-      tone_on_i   => sw_sync(15),
-      load_i      => load_s,
-      attenu_i    => sw_sync(17 downto 16) & '0',
-      dds_o 	   	=> dds_r);
+      clk_12m    			=> clock_12m_s,
+      reset_n    			=> reset_n_s,
+      tone_on_i  			=> sw_sync(15),
+      load_i     			=> load_s,
+		note_array  	 	=> note_array,
+		velocity_array	=> velocity_array,
+		note_on_array  	=> note_on_array,
+      dds_o 	   			=> dds_r);
+			
+	midi_ctr: midi_controller
+		port map( 
+			clk						=> clock_12m_s,
+			reset_n  			=> reset_n_s,
+      data_valid_i  => midi_data_valid_s,
+      midi_data_i 	=> midi_data_s,
+			note_o				=> note_array,
+			velocity_o		=> velocity_array,
+			note_on_o 		=> note_on_array
+      );
+
+	midi_uart1: midi_uart
+		port map(
+    clk 					=> clock_12m_s,
+    reset_n     	=> reset_n_s,
+    ser_data_i  	=> gpio_26_sync,
+		data_valid_o	=> midi_data_valid_s,
+		par_data_o		=> midi_data_s
+		);
 	  
 		-- linker kanal hat immer das gleiche wie rechts
 		dds_l				<= dds_r;
