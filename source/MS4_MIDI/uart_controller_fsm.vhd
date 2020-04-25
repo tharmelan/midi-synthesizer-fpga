@@ -18,7 +18,7 @@ ENTITY uart_controller_fsm IS
   PORT( clk,reset_n  : IN    std_logic;
         baud_tick_i  : IN    std_logic;
         start_i      : IN    std_logic;
-        uart_data_i  : IN    std_logic_vector(7 downto 0);
+        uart_data_i  : IN    std_logic_vector(9 downto 0);
         start_bit_o  : OUT   std_logic;
         data_valid_o : OUT   std_logic;
         shift_enable : OUT   std_logic
@@ -54,7 +54,7 @@ BEGIN
           next_state <= s_receiving;
         end if;
       when s_receiving =>
-        if (count >= 8) then  -- 8 maybe as constant, signal Data length
+        if (count >= 10) then  -- 8 maybe as constant, signal Data length
           next_state <= s_checking;
         end if;
       when s_checking =>
@@ -101,7 +101,7 @@ BEGIN
   --------------------------------------------------
   start_bit_o  <= '1' when(state = s_idle AND start_i = '1') else '0';
   shift_enable <= '1' when(state = s_receiving and baud_tick_i = '1') else '0';
-  data_valid_o <= '1' when(state = s_checking AND uart_data_i(7) = '1' AND uart_data_i(0) = '0') else '0';
+  data_valid_o <= '1' when(state = s_checking AND uart_data_i(9) = '1' AND uart_data_i(0) = '0') else '0';
   
 
 

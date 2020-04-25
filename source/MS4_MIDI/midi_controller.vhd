@@ -50,9 +50,9 @@ ARCHITECTURE rtl OF midi_controller IS
 	signal reg_data1, reg_data2		:	std_logic_vector(6 downto 0);
 	signal reg_status							: std_logic_vector(2 downto 0);
 	
-	signal reg_note, next_reg_note				: t_tone_array;
-	signal reg_velocity, next_reg_velocity: t_tone_array;
-	signal reg_note_on, next_reg_note_on	: t_note_on;
+	signal reg_note, next_reg_note				: t_tone_array := (others=>(others=>'0'));
+	signal reg_velocity, next_reg_velocity: t_tone_array := (others=>(others=>'0'));
+	signal reg_note_on, next_reg_note_on	: t_note_on		 := (others=>'0');
 	
 	constant DEL_NOTE : std_logic_vector(2 downto 0) := "000";
 	constant SET_NOTE : std_logic_vector(2 downto 0) := "001";
@@ -84,15 +84,18 @@ BEGIN
   variable note_available, note_written: std_logic;
   BEGIN
 		if(new_data_s = '1') THEN
-		note_available := '0';
+			note_available := '0';
+			note_written   := '0';
 		
 			-- Delete Note if not used anymore
 			FOR i IN 0 TO 9 LOOP
 				if reg_note(i) = reg_data1 AND reg_note_on(i) = '1' THEN 
 					note_available := '1';
 				
-					if reg_status = DEL_NOTE THEN 
-					elsif reg_status = SET_NOTE AND reg_data2 = "00000000" THEN
+					if reg_status = DEL_NOTE THEN
+					  next_reg_note_on(i) <= '0';
+					elsif reg_status = SET_NOTE AND reg_data2 = "0000000" THEN
+					  next_reg_note_on(i) <= '0';
 					end IF;
 				END IF;
 			END LOOP;
@@ -114,14 +117,30 @@ BEGIN
 			END if;
 			
 		end if;
-				
 		
   END PROCESS fill_tone_register;
+	
+	flip_flops : PROCESS(clk, reset_n)
+  BEGIN
+    IF reset_n = '0' THEN
+				reg_note 		 <= (others=>(others=>'0'));
+				reg_velocity <= (others=>(others=>'0'));
+				reg_note_on  <= (others=>'0');
+    ELSIF rising_edge(clk) THEN
+      reg_note <= next_reg_note;
+			reg_velocity <= next_reg_velocity;
+			reg_note_on <= next_reg_note_on; 
+    END IF;
+  END PROCESS flip_flops;
 
 
 	reg_data1 <= midi_data_i(6 downto 0) when sel_data1_s = '1';
 	reg_data2 <= midi_data_i(6 downto 0) when sel_data2_s = '1';
 	reg_status <= midi_data_i(6 downto 4) when sel_status_s = '1';
+	
+	note_o <= reg_note;
+	velocity_o <= reg_velocity;
+	note_on_o  <= reg_note_on;
 
  -- End Architecture
 -------------------------------------------

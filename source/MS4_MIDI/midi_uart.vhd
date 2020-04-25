@@ -52,7 +52,7 @@ architecture str of midi_uart is
   signal start_bit              : std_logic;
   signal fall                   : std_logic;
   signal steig                  : std_logic;
-  signal uart_data              : std_logic_vector(7 downto 0);
+  signal uart_data              : std_logic_vector(9 downto 0);
 
   -----------------------------------------------------------------------------
   -- Component declarations
@@ -90,7 +90,7 @@ architecture str of midi_uart is
       clk, reset_n : IN  std_logic;
       baud_tick_i  : IN  std_logic;
       start_i      : IN  std_logic;
-      uart_data_i  : IN  std_logic_vector(7 downto 0);
+      uart_data_i  : IN  std_logic_vector(9 downto 0);
       start_bit_o  : OUT std_logic;
       data_valid_o : OUT std_logic;
       shift_enable : OUT std_logic);
@@ -106,7 +106,7 @@ begin  -- architecture str
   baud_tick_1: baud_tick
     generic map (
       baud_rate  => 31_250,
-      clock_rate => 50_000_000)
+      clock_rate => 12_500_000)
     port map (
       clk     => clk,
       reset_n => reset_n,
@@ -125,7 +125,7 @@ begin  -- architecture str
   -- instance "shiftreg_s2p"
   shiftreg_s2p:	 shiftreg_s2p_ms4
     generic map (
-      width => 8)
+      width => 10)
     port map (
       clk      => clk,
       reset_n  => reset_n,
@@ -145,7 +145,7 @@ begin  -- architecture str
       data_valid_o => data_valid_o,
       shift_enable => shift_enable);
 			
-		par_data_o <= uart_data;
+		par_data_o <= uart_data(8 downto 1); -- truncate start and stop bit
 
 end architecture str;
 

@@ -205,6 +205,8 @@ begin  -- architecture struct
         rst_sim(tv, key_0);
       elsif cmd = string'("run_sim") then
         run_sim(tv);
+			elsif cmd = string'("uar_sim") then
+        uar_sim(tv, gpio_26);
       elsif cmd = string'("gpi_sim") then
         gpi_sim(tv, switch);
       elsif cmd = string'("ini_cod") then
