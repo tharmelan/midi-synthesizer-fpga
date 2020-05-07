@@ -146,9 +146,12 @@ BEGIN
   END PROCESS flip_flops;
 
 
-	next_reg_data1 <= midi_data_i(6 downto 0) when sel_data1_s = '1';
-	next_reg_data2 <= midi_data_i(6 downto 0) when sel_data2_s = '1';
-	next_reg_status <= midi_data_i(6 downto 4) when sel_status_s = '1';
+	next_reg_data1 <= midi_data_i(6 downto 0) when sel_data1_s = '1'
+									ELSE	reg_data1 when sel_data1_s = '0';
+	next_reg_data2 <= midi_data_i(6 downto 0) when sel_data2_s = '1'
+									ELSE	reg_data2 when sel_data2_s = '0';
+	next_reg_status <= midi_data_i(6 downto 4) when sel_status_s = '1'
+									ELSE	reg_status when sel_status_s = '0';
 	
 	note_o <= reg_note;
 	velocity_o <= reg_velocity;

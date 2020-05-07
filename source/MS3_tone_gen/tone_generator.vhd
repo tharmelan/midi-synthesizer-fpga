@@ -22,6 +22,7 @@ entity tone_generator is
 		note_array  	 : in     t_tone_array;
 		velocity_array : in     t_tone_array;
 		note_on_array  : in 		t_note_on;
+		instr_sel_i 	 : in     std_logic_vector(3 downto 0);
 		dds_o       	 : out    std_logic_vector(N_AUDIO-1 downto 0));
 end tone_generator;
 
@@ -37,6 +38,7 @@ architecture rtl of tone_generator is
 			tone_on_i		: in     std_logic;
 			load_i      : in     std_logic;
 			attenu_i		: in     std_logic_vector(2 downto 0);
+			instr_sel_i : in     std_logic_vector(3 downto 0);
 			dds_o       : out    std_logic_vector(N_AUDIO-1 downto 0));
   end component dds;
 	
@@ -78,7 +80,8 @@ dds_inst_gen: for i in 0 to 9 generate
 							 phi_incr_i	=> LUT_midi2dds(to_integer(unsigned(note_array(i)))), 
 							 load_i			=> load_i, 
 							 attenu_i		=> "001", 
-							 dds_o			=> dds_o_array(i)
+							 dds_o			=> dds_o_array(i),
+							 instr_sel_i => instr_sel_i
 							);
 	end generate dds_inst_gen;
 

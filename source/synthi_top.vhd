@@ -162,6 +162,7 @@ architecture str of synthi_top is
 			note_array  	 : in     t_tone_array;
 			velocity_array : in     t_tone_array;
 			note_on_array  : in 		t_note_on;
+			instr_sel_i : in     std_logic_vector(3 downto 0);
 			dds_o       	 : out    std_logic_vector(N_AUDIO-1 downto 0));
   end component tone_generator;
 	
@@ -263,9 +264,10 @@ begin  -- architecture str
       reset_n    			=> reset_n_s,
       tone_on_i  			=> sw_sync(15),
       load_i     			=> load_s,
-		note_array  	 	=> note_array,
-		velocity_array	=> velocity_array,
-		note_on_array  	=> note_on_array,
+			note_array  	 	=> note_array,
+			velocity_array	=> velocity_array,
+			note_on_array  	=> note_on_array,
+			instr_sel_i			=> sw_sync(7 downto 4),
       dds_o 	   			=> dds_r);
 			
 	midi_ctr: midi_controller

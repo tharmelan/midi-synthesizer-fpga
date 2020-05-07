@@ -32,6 +32,7 @@ entity dds is
     tone_on_i		: in     std_logic;
     load_i      : in     std_logic;
     attenu_i		: in     std_logic_vector(2 downto 0);
+		instr_sel_i : in     std_logic_vector(3 downto 0);
     dds_o       : out    std_logic_vector(N_AUDIO-1 downto 0)
     );
 
@@ -58,6 +59,31 @@ begin  -- architecture rtl
       count <= next_count;
     end if;
   end process flip_flops;
+	
+	instr_sel : process(instr_sel_i, lut_addr)
+  begin
+			
+		case instr_sel_i is 
+			when "0000" => lut_val <= to_signed(LUT(lut_addr), N_AUDIO);
+			when "0001" => lut_val <= to_signed(LUT_VIOLA(lut_addr), N_AUDIO);
+			when "0010" => lut_val <= to_signed(LUT_BASSOON(lut_addr), N_AUDIO);
+			when "0011" => lut_val <= to_signed(LUT_CLARINET(lut_addr), N_AUDIO);
+			when "0100" => lut_val <= to_signed(LUT_ENGLISH_HORN(lut_addr), N_AUDIO);
+			when "0101" => lut_val <= to_signed(LUT_TRUMPET(lut_addr), N_AUDIO);
+			when "0110" => lut_val <= to_signed(LUT_PIANO(lut_addr), N_AUDIO);
+			when "0111" => lut_val <= to_signed(LUT_ORGAN(lut_addr), N_AUDIO);
+			when "1000" => lut_val <= to_signed(LUT_OBOE(lut_addr), N_AUDIO);
+			when "1001" => lut_val <= to_signed(LUT_FLUTE(lut_addr), N_AUDIO);
+			when "1010" => lut_val <= to_signed(LUT_VIOLIN(lut_addr), N_AUDIO);
+			when "1011" => lut_val <= to_signed(LUT_TUBA(lut_addr), N_AUDIO);
+			when "1100" => lut_val <= to_signed(LUT_PICCOLO(lut_addr), N_AUDIO);
+			when "1101" => lut_val <= to_signed(LUT(lut_addr), N_AUDIO);
+			when "1110" => lut_val <= to_signed(LUT(lut_addr), N_AUDIO);
+			when "1111" => lut_val <= to_signed(LUT(lut_addr), N_AUDIO);
+			when others => lut_val <= to_signed(LUT(lut_addr), N_AUDIO);
+		end case;
+		
+  end process instr_sel;
 	  
 	  
 -- Concurrent Assignments
@@ -70,10 +96,6 @@ begin  -- architecture rtl
   --LUT has only 256 values, so we have to truncate the counter				
   lut_addr	 <= to_integer(count(N_CUM-1 downto N_CUM-N_LUT));
   
-  --Lookup the value of a sinus at specific phase
-  lut_val	 <= to_signed(LUT_VIOLA(lut_addr), N_AUDIO);
-  
-	
   --Decrese volume of output
 	dds_s <= to_integer(shift_right(lut_val,to_integer(unsigned(attenu_i))));
   
