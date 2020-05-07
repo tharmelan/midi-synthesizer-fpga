@@ -27,6 +27,15 @@ vcom -2008 -explicit -work work ../../../source/MS3_tone_gen/tone_gen_pkg.vhd
 vcom -2008 -explicit -work work ../../../source/MS3_tone_gen/dds.vhd
 vcom -2008 -explicit -work work ../../../source/MS3_tone_gen/tone_generator.vhd
 
+#MS4
+
+vcom -2008 -explicit -work work ../../../source/MS4_MIDI/baud_tick.vhd
+vcom -2008 -explicit -work work ../../../source/MS4_MIDI/flanken_detect.vhd
+vcom -2008 -explicit -work work ../../../source/MS4_MIDI/midi_controller.vhd
+vcom -2008 -explicit -work work ../../../source/MS4_MIDI/midi_controller_fsm.vhd
+vcom -2008 -explicit -work work ../../../source/MS4_MIDI/midi_uart.vhd
+vcom -2008 -explicit -work work ../../../source/MS4_MIDI/shiftreg_s2p_ms4.vhd
+vcom -2008 -explicit -work work ../../../source/MS4_MIDI/uart_controller_fsm.vhd
 
 vcom -2008 -explicit -work work ../../../source/synthi_top.vhd
 vcom -2008 -explicit -work work ../../../source/synthi_top_tb.vhd

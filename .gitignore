@@ -22,3 +22,10 @@
 *.log
 *.toc
 *.auctex-auto/
+
+# Matlab
+*.asv
+
+#ModelSim
+**/modelsim/**
+!*wave*.do

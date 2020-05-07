@@ -42,7 +42,7 @@ BEGIN
   --------------------------------------------------
   -- PROCESS FOR COMB-INPUT LOGIC
   --------------------------------------------------
-  fsm_drive: PROCESS(data_valid_i,state)
+  fsm_drive: PROCESS(data_valid_i,state,midi_data_i)
   BEGIN
     -- Default statement
     next_state <= state;

@@ -47,8 +47,9 @@ ARCHITECTURE rtl OF midi_controller IS
 	signal sel_status_s : std_logic;
 	signal sel_data1_s  : std_logic;
 	signal sel_data2_s  : std_logic;
-	signal reg_data1, reg_data2		:	std_logic_vector(6 downto 0);
-	signal reg_status							: std_logic_vector(2 downto 0);
+	signal reg_data1, next_reg_data1		:	std_logic_vector(6 downto 0);
+	signal reg_data2, next_reg_data2		:	std_logic_vector(6 downto 0);
+	signal reg_status, next_reg_status	: std_logic_vector(2 downto 0);
 	
 	signal reg_note, next_reg_note				: t_tone_array := (others=>(others=>'0'));
 	signal reg_velocity, next_reg_velocity: t_tone_array := (others=>(others=>'0'));
@@ -83,6 +84,11 @@ BEGIN
   fill_tone_register: PROCESS(all)
   variable note_available, note_written: std_logic;
   BEGIN
+	
+		next_reg_note <= reg_note;
+		next_reg_note_on <= reg_note_on;
+		next_reg_velocity <= reg_velocity;
+	
 		if(new_data_s = '1') THEN
 			note_available := '0';
 			note_written   := '0';
@@ -126,17 +132,23 @@ BEGIN
 				reg_note 		 <= (others=>(others=>'0'));
 				reg_velocity <= (others=>(others=>'0'));
 				reg_note_on  <= (others=>'0');
+				reg_data1		 <= (others=>'0');
+				reg_data2		 <= (others=>'0');
+				reg_status	 <= (others=>'0');
     ELSIF rising_edge(clk) THEN
       reg_note <= next_reg_note;
 			reg_velocity <= next_reg_velocity;
 			reg_note_on <= next_reg_note_on; 
+			reg_data1 <= next_reg_data1;
+			reg_data2 <= next_reg_data2;
+			reg_status <= next_reg_status;
     END IF;
   END PROCESS flip_flops;
 
 
-	reg_data1 <= midi_data_i(6 downto 0) when sel_data1_s = '1';
-	reg_data2 <= midi_data_i(6 downto 0) when sel_data2_s = '1';
-	reg_status <= midi_data_i(6 downto 4) when sel_status_s = '1';
+	next_reg_data1 <= midi_data_i(6 downto 0) when sel_data1_s = '1';
+	next_reg_data2 <= midi_data_i(6 downto 0) when sel_data2_s = '1';
+	next_reg_status <= midi_data_i(6 downto 4) when sel_status_s = '1';
 	
 	note_o <= reg_note;
 	velocity_o <= reg_velocity;

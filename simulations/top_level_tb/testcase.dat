@@ -1,3 +1,6 @@
 rst_sim
-gpi_sim 00 00 45 10
+gpi_sim 00 00 80 00
+uar_sim 90 01 00
+uar_sim 2F 01 00
+uar_sim 00 01 00
 run_sim 00 00 FF FF

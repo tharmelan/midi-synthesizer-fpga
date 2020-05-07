@@ -1950,6 +1950,13 @@ set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N_15
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N_15
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N_16
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N_16
+set_global_assignment -name VHDL_FILE ../source/MS4_MIDI/uart_controller_fsm.vhd
+set_global_assignment -name VHDL_FILE ../source/MS4_MIDI/shiftreg_s2p_ms4.vhd
+set_global_assignment -name VHDL_FILE ../source/MS4_MIDI/midi_uart.vhd
+set_global_assignment -name VHDL_FILE ../source/MS4_MIDI/midi_controller_fsm.vhd
+set_global_assignment -name VHDL_FILE ../source/MS4_MIDI/midi_controller.vhd
+set_global_assignment -name VHDL_FILE ../source/MS4_MIDI/flanken_detect.vhd
+set_global_assignment -name VHDL_FILE ../source/MS4_MIDI/baud_tick.vhd
 set_global_assignment -name VHDL_FILE ../source/MS3_tone_gen/tone_generator.vhd
 set_global_assignment -name VHDL_FILE ../source/MS3_tone_gen/tone_gen_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/MS3_tone_gen/dds.vhd
