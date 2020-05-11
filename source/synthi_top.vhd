@@ -48,7 +48,13 @@ entity synthi_top is
 		AUD_ADCDAT  : in	 std_logic;
 		
 		LEDG_0		: out	std_logic;
-		LEDR_3		: out std_logic
+		LEDR_3		: out std_logic;
+		
+	 LCD_DATA : out std_logic_vector(7 downto 4);  -- Buchstaben, welche angezeigt werden sollen
+    LCD_RS   : out std_logic;
+    LCD_EN   : out std_logic;           -- Enable des LCD
+    LCD_RW   : out std_logic;           -- Read/Write des LCD
+    LCD_ON   : out std_logic            -- LCD einschalten
     );
 
 end entity synthi_top;
@@ -64,7 +70,7 @@ architecture str of synthi_top is
   signal key_1_sync      : std_logic;
   signal sw_sync         : std_logic_vector(17 downto 0);
   signal reset_n_s       : std_logic;
-	signal gpio_26_sync    : std_logic;
+  signal gpio_26_sync    : std_logic;
   signal clock_12m_s     : std_logic;
   signal write_s         : std_logic;
   signal write_data      : std_logic_vector(15 downto 0);
@@ -185,6 +191,17 @@ architecture str of synthi_top is
 		par_data_o		: out std_logic_vector(7 downto 0)
   );
 	end component midi_uart;
+	
+	component lcd_top
+    port(
+      clk  : in  std_logic;
+      reset_n  : in  std_logic;
+      switch_i : in  std_logic_vector(17 downto 0);
+      lcdRS    : out std_logic;
+      lcdE     : out std_logic;
+      lcdData  : out std_logic_vector(7 downto 4)
+      );
+  end component;
 
 
 begin  -- architecture str
@@ -289,6 +306,16 @@ begin  -- architecture str
 		data_valid_o	=> midi_data_valid_s,
 		par_data_o		=> midi_data_s
 		);
+		
+	lcd_top1 : lcd_top
+    port map(
+      clk 		=> clock_12m_s,
+      reset_n  => reset_n_s,
+      switch_i => sw_sync,
+      lcdRS    => LCD_RS,
+      lcdE     => LCD_EN,
+      lcdData  => LCD_DATA
+      );
 	  
 		-- linker kanal hat immer das gleiche wie rechts
 		dds_l				<= dds_r;
@@ -299,6 +326,9 @@ begin  -- architecture str
 	  
 	  LEDG_0 <= sw_sync(3);
 	  LEDR_3 <= SW(3);
+	  
+	  LCD_RW         <= '0';
+	  LCD_ON         <= '1';
 
 end architecture str;
 

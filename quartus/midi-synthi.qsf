@@ -1950,6 +1950,11 @@ set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N_15
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N_15
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N_16
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N_16
+set_global_assignment -name VHDL_FILE ../source/MS5_LCD/lcd_ui.vhd
+set_global_assignment -name VHDL_FILE ../source/MS5_LCD/lcd_top.vhd
+set_global_assignment -name VHDL_FILE ../source/MS5_LCD/lcd_pkg.vhd
+set_global_assignment -name VHDL_FILE ../source/MS5_LCD/lcd_driver.vhd
+set_global_assignment -name VHDL_FILE ../source/MS5_LCD/lcd_controller.vhd
 set_global_assignment -name VHDL_FILE ../source/MS4_MIDI/uart_controller_fsm.vhd
 set_global_assignment -name VHDL_FILE ../source/MS4_MIDI/shiftreg_s2p_ms4.vhd
 set_global_assignment -name VHDL_FILE ../source/MS4_MIDI/midi_uart.vhd

@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(EP4CE115F29) Path("C:/gitrepo/midi-synthesizer-fpga/quartus/output_files/") File("midi-synthi.sof") MfrSpec(OpMask(1));
+		Device PartName(EP4CE115F29) Path("C:/Users/beats/OneDrive/zhaw/Digitaltechnik/DTP2/DTP Projekt/midi-synthesizer-fpga/quartus/output_files/") File("midi-synthi.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 
