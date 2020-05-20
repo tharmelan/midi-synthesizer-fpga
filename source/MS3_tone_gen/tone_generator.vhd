@@ -23,6 +23,8 @@ entity tone_generator is
 		velocity_array : in     t_tone_array;
 		note_on_array  : in 		t_note_on;
 		instr_sel_i 	 : in     std_logic_vector(3 downto 0);
+		modulation_i 	 : in 		std_logic_vector(6 downto 0);
+		data_entry_i 	 : in 		std_logic_vector(6 downto 0);
 		dds_o       	 : out    std_logic_vector(N_AUDIO-1 downto 0));
 end tone_generator;
 
@@ -47,6 +49,9 @@ architecture rtl of tone_generator is
 	type t_dds_o_array is array(0 to 9) of std_logic_vector(N_AUDIO-1 downto 0);
 	
 	signal dds_o_array: t_dds_o_array;
+	signal dds_modul_array: t_dds_o_array;
+	
+	constant MODUL_FREQ_DIV : natural := 4; -- Divide Carrier Frequency by 2^MODUL_FREQ
 
 -------------------------------------------
 -- Begin Architecture
@@ -65,25 +70,34 @@ begin
 		END LOOP;
 	dds_o <= std_logic_vector(dds_sum);
   end process tone_sum;
-
-  --------------------------------------------------
-  -- PROCESS FOR REGISTERS
-  --------------------------------------------------
   
   -- Port Maps -----
   
-dds_inst_gen: for i in 0 to 9 generate
-		inst_dds: dds
+dds_carrier_gen: for i in 0 to 9 generate
+		carrier_dds: dds
 			port map(clk_12m        => clk_12m,
 							 reset_n		=> reset_n,
 							 tone_on_i  => tone_on_i,
-							 phi_incr_i	=> LUT_midi2dds(to_integer(unsigned(note_array(i)))), 
+							 phi_incr_i	=> std_logic_vector(unsigned(LUT_midi2dds(to_integer(unsigned(note_array(i))))) + unsigned(std_logic_vector(shift_right(signed(dds_modul_array(i)),7)))* unsigned(modulation_i))(N_CUM-1 downto 0), 
 							 load_i			=> load_i, 
-							 attenu_i		=> "001", 
+							 attenu_i		=> "000", 
 							 dds_o			=> dds_o_array(i),
 							 instr_sel_i => instr_sel_i
 							);
-	end generate dds_inst_gen;
+	end generate dds_carrier_gen;
+	
+	dds_modulator_gen: for j in 0 to 9 generate
+		modulator_dds: dds
+			port map(clk_12m    => clk_12m,
+							 reset_n		=> reset_n,
+							 tone_on_i  => '1',
+							 phi_incr_i	=> std_logic_vector(shift_right(unsigned(LUT_midi2dds(to_integer(unsigned(note_array(j))))), MODUL_FREQ_DIV) * unsigned(data_entry_i))(N_CUM-1 downto 0),
+							 load_i			=> load_i, 
+							 attenu_i		=> "000", 
+							 dds_o			=> dds_modul_array(j),
+							 instr_sel_i => "0000"
+							);
+	end generate dds_modulator_gen;
 
 -- End Architecture 
 ------------------------------------------- 

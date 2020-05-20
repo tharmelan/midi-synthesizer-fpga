@@ -46,6 +46,7 @@ BEGIN
   BEGIN
     -- Default statement
     next_state <= state;
+		new_data_o   <= '0';	 
 
     case state is
       when s_wait_status =>
@@ -63,6 +64,7 @@ BEGIN
       when s_wait_data2 =>
 			if (data_valid_i = '1') then
           next_state <= s_wait_status;
+					new_data_o <= '1';
         end if;
       when others =>
         next_state <= s_wait_status;
@@ -74,7 +76,6 @@ BEGIN
   --------------------------------------------------
   comb_logic: PROCESS(state)
   BEGIN
-		new_data_o   <= '0';	 
 		sel_status_o <= '0';
 		sel_data1_o  <= '0';
 		sel_data2_o  <= '0';
@@ -86,7 +87,6 @@ BEGIN
         sel_data1_o  <= '1';
       when s_wait_data2 =>
 				sel_data2_o  <= '1';
-				new_data_o   <= '1';
       when others => NULL;
     end case;
 		
