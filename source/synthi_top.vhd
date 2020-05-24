@@ -88,6 +88,8 @@ architecture str of synthi_top is
 	
 	--Milestone 4
 	signal midi_data_s    			: std_logic_vector(7 downto 0);
+	signal modulation_s    			: std_logic_vector(6 downto 0);
+	signal data_entry_s    			: std_logic_vector(6 downto 0);
 	signal midi_data_valid_s    : std_logic;
 	signal note_array						: t_tone_array;
 	signal velocity_array				: t_tone_array;
@@ -167,7 +169,9 @@ architecture str of synthi_top is
 			note_array  	 : in     t_tone_array;
 			velocity_array : in     t_tone_array;
 			note_on_array  : in 		t_note_on;
-			instr_sel_i : in     std_logic_vector(3 downto 0);
+			instr_sel_i 	 : in     std_logic_vector(3 downto 0);
+			modulation_i 	 : in 		std_logic_vector(6 downto 0);
+			data_entry_i 	 : in 		std_logic_vector(6 downto 0);
 			dds_o       	 : out    std_logic_vector(N_AUDIO-1 downto 0));
   end component tone_generator;
 	
@@ -175,6 +179,8 @@ architecture str of synthi_top is
   PORT( clk,reset_n  : IN  std_logic;
         midi_data_i  : IN  std_logic_vector(7 downto 0);
         data_valid_i : IN  std_logic;
+				modulation_o : OUT std_logic_vector(6 downto 0);
+				data_entry_o : OUT std_logic_vector(6 downto 0);
 				note_o			 : OUT t_tone_array;
 				velocity_o	 : OUT t_tone_array;
 				note_on_o 	 : OUT t_note_on
@@ -292,6 +298,8 @@ begin  -- architecture str
 			note_array  	 	=> note_array,
 			velocity_array	=> velocity_array,
 			note_on_array  	=> note_on_array,
+			modulation_i    => modulation_s,
+			data_entry_i		=> data_entry_s,
 			instr_sel_i			=> sw_sync(7 downto 4),
       dds_o 	   			=> dds_r);
 			
@@ -303,7 +311,9 @@ begin  -- architecture str
       midi_data_i 	=> midi_data_s,
 			note_o				=> note_array,
 			velocity_o		=> velocity_array,
-			note_on_o 		=> note_on_array
+			note_on_o 		=> note_on_array,
+			modulation_o  => modulation_s,
+			data_entry_o  => data_entry_s
       );
 
 	midi_uart1: midi_uart

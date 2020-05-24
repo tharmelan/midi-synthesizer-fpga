@@ -20,6 +20,8 @@ ENTITY midi_controller IS
   PORT( clk,reset_n  : IN  std_logic;
         data_valid_i : IN  std_logic;
         midi_data_i  : IN  std_logic_vector(7 downto 0);
+        modulation_o : OUT std_logic_vector(6 downto 0);
+        data_entry_o : OUT std_logic_vector(6 downto 0);
 				note_o			 : OUT t_tone_array;
 				velocity_o	 : OUT t_tone_array;
 				note_on_o 	 : OUT t_note_on
@@ -47,16 +49,18 @@ ARCHITECTURE rtl OF midi_controller IS
 	signal sel_status_s : std_logic;
 	signal sel_data1_s  : std_logic;
 	signal sel_data2_s  : std_logic;
-	signal reg_data1, next_reg_data1		:	std_logic_vector(6 downto 0);
-	signal reg_data2, next_reg_data2		:	std_logic_vector(6 downto 0);
-	signal reg_status, next_reg_status	: std_logic_vector(2 downto 0);
-	
-	signal reg_note, next_reg_note				: t_tone_array := (others=>(others=>'0'));
-	signal reg_velocity, next_reg_velocity: t_tone_array := (others=>(others=>'0'));
-	signal reg_note_on, next_reg_note_on	: t_note_on		 := (others=>'0');
+	signal reg_data1, next_reg_data1							:	std_logic_vector(6 downto 0);
+	signal reg_data2, next_reg_data2							:	std_logic_vector(6 downto 0);
+	signal reg_status, next_reg_status						: std_logic_vector(2 downto 0);
+	signal reg_data_entry, next_reg_data_entry		:	std_logic_vector(6 downto 0);
+	signal reg_modulation, next_reg_modulation		:	std_logic_vector(6 downto 0);
+	signal reg_note, next_reg_note								: t_tone_array;
+	signal reg_velocity, next_reg_velocity				: t_tone_array;
+	signal reg_note_on, next_reg_note_on					: t_note_on;
 	
 	constant DEL_NOTE : std_logic_vector(2 downto 0) := "000";
 	constant SET_NOTE : std_logic_vector(2 downto 0) := "001";
+	constant VALUE_CHG : std_logic_vector(2 downto 0) := "011";
 
 
 -- Begin Architecture
@@ -81,6 +85,22 @@ BEGIN
   --------------------------------------------------
   -- PROCESS FOR COMBINATORIAL LOGIC
   --------------------------------------------------
+	comb_logic: PROCESS(all)
+	BEGIN
+		
+		next_reg_data_entry <= reg_data_entry;
+		next_reg_modulation <= reg_modulation;
+	
+		if(new_data_s = '1' AND reg_status = VALUE_CHG) then
+			case reg_data1 is
+				when "0000001" => next_reg_modulation <= reg_data2;
+				when "0000111" => next_reg_data_entry <= reg_data2;
+				when others => null;
+			end case;
+		end if;
+	end PROCESS comb_logic;
+	
+	
   fill_tone_register: PROCESS(all)
   variable note_available, note_written: std_logic;
   BEGIN
@@ -135,6 +155,8 @@ BEGIN
 				reg_data1		 <= (others=>'0');
 				reg_data2		 <= (others=>'0');
 				reg_status	 <= (others=>'0');
+				reg_data_entry	 <= (others=>'0');
+				reg_modulation	 <= (others=>'0');
     ELSIF rising_edge(clk) THEN
       reg_note <= next_reg_note;
 			reg_velocity <= next_reg_velocity;
@@ -142,6 +164,8 @@ BEGIN
 			reg_data1 <= next_reg_data1;
 			reg_data2 <= next_reg_data2;
 			reg_status <= next_reg_status;
+			reg_data_entry <= next_reg_data_entry;
+			reg_modulation <= next_reg_modulation;
     END IF;
   END PROCESS flip_flops;
 
@@ -156,6 +180,8 @@ BEGIN
 	note_o <= reg_note;
 	velocity_o <= reg_velocity;
 	note_on_o  <= reg_note_on;
+	modulation_o <= reg_modulation;
+	data_entry_o <= reg_data_entry;
 
  -- End Architecture
 -------------------------------------------
