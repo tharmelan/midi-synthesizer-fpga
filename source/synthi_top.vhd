@@ -47,8 +47,7 @@ entity synthi_top is
 		AUD_DACDAT  : out	 std_logic;
 		AUD_ADCDAT  : in	 std_logic;
 		
-		LEDG_0		: out	std_logic;
-		LEDR_3		: out std_logic;
+		LEDR		: out	std_logic_vector(17 downto 0);
 		
 	 LCD_DATA : out std_logic_vector(7 downto 4);  -- Buchstaben, welche angezeigt werden sollen
     LCD_RS   : out std_logic;
@@ -202,6 +201,15 @@ architecture str of synthi_top is
       lcdData  : out std_logic_vector(7 downto 4)
       );
   end component;
+  
+  component Visualisierung
+	port(
+		clk 		   : in  std_logic;
+	   reset_n     : in  std_logic;
+	   audiodata_i : in  std_logic_vector(15 downto 0);
+      led_o       : out std_logic_vector(17 downto 0)
+		);
+	end component;
 
 
 begin  -- architecture str
@@ -316,6 +324,17 @@ begin  -- architecture str
       lcdE     => LCD_EN,
       lcdData  => LCD_DATA
       );
+		
+	visual : Visualisierung
+		port map(
+		clk 		   => clock_12m_s,
+	   reset_n     => reset_n_s,
+	   audiodata_i => dacdat_pl(15 downto 0),
+      led_o       => LEDR(17 downto 0)
+		);
+		
+
+			
 	  
 		-- linker kanal hat immer das gleiche wie rechts
 		dds_l				<= dds_r;
@@ -324,8 +343,8 @@ begin  -- architecture str
 	  AUD_ADCLRCK <= ws;
 	  load_o 	  <= load_s;
 	  
-	  LEDG_0 <= sw_sync(3);
-	  LEDR_3 <= SW(3);
+	  --LEDG_0 <= sw_sync(3);
+	  --LEDR_3 <= SW(3);
 	  
 	  LCD_RW         <= '0';
 	  LCD_ON         <= '1';

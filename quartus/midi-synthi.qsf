@@ -1950,6 +1950,7 @@ set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N_15
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N_15
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_TX_D_N_16
 set_instance_assignment -name IO_STANDARD LVDS -to HSMC_RX_D_N_16
+set_global_assignment -name VHDL_FILE ../source/MS5_Visualisierung/visualisierung.vhd
 set_global_assignment -name VHDL_FILE ../source/MS5_LCD/lcd_ui.vhd
 set_global_assignment -name VHDL_FILE ../source/MS5_LCD/lcd_top.vhd
 set_global_assignment -name VHDL_FILE ../source/MS5_LCD/lcd_pkg.vhd
