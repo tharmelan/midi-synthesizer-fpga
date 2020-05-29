@@ -213,7 +213,8 @@ architecture str of synthi_top is
 		clk 		   : in  std_logic;
 	   reset_n     : in  std_logic;
 	   audiodata_i : in  std_logic_vector(15 downto 0);
-      led_o       : out std_logic_vector(17 downto 0)
+      led_o       : out std_logic_vector(17 downto 0);
+		switch		: in	std_logic
 		);
 	end component;
 
@@ -340,7 +341,8 @@ begin  -- architecture str
 		clk 		   => clock_12m_s,
 	   reset_n     => reset_n_s,
 	   audiodata_i => dacdat_pl(15 downto 0),
-      led_o       => LEDR(17 downto 0)
+      led_o       => LEDR(17 downto 0),
+		switch		=> sw_sync(17)
 		);
 		
 
