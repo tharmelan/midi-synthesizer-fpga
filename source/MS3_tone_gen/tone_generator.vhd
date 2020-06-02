@@ -51,7 +51,7 @@ architecture rtl of tone_generator is
 	signal dds_o_array: t_dds_o_array;
 	signal dds_modul_array: t_dds_o_array;
 	
-	constant MODUL_FREQ_DIV : natural := 4; -- Divide Carrier Frequency by 2^MODUL_FREQ
+	constant MODUL_FREQ_DIV : natural := 5; -- Divide Carrier Frequency by 2^MODUL_FREQ
 
 -------------------------------------------
 -- Begin Architecture
@@ -78,7 +78,7 @@ dds_carrier_gen: for i in 0 to 9 generate
 			port map(clk_12m        => clk_12m,
 							 reset_n		=> reset_n,
 							 tone_on_i  => tone_on_i,
-							 phi_incr_i	=> std_logic_vector(unsigned(LUT_midi2dds(to_integer(unsigned(note_array(i))))) + unsigned(std_logic_vector(shift_right(signed(dds_modul_array(i)),7)))* unsigned(modulation_i))(N_CUM-1 downto 0), 
+							 phi_incr_i	=> std_logic_vector(to_signed(to_integer(unsigned(LUT_midi2dds(to_integer(unsigned(note_array(i)))))),N_CUM+1) + shift_right(signed(dds_modul_array(i)),9)* to_signed(to_integer(unsigned(modulation_i)), 9))(N_CUM-1 downto 0), 
 							 load_i			=> load_i, 
 							 attenu_i		=> "000", 
 							 dds_o			=> dds_o_array(i),

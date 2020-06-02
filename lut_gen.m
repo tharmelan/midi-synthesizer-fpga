@@ -82,10 +82,10 @@ lut_tuba = ydata*4096;
 tuba = sprintf('%g,',floor(lut_tuba))
 
 %% Piccolo
-%maxvalue = 1033;
+%maxvalue = 1346;
 fplot(@(x) 972.0*cos(2*pi*x*1-(-1.937))+110.39*cos(2*pi*x*2-1.5e-2)+353.86*cos(2*pi*x*3-(-1.488))+193.81*cos(2*pi*x*4-(-0.313))+33.06*cos(2*pi*x*5-2.853)+87.82*cos(2*pi*x*6-(-0.46))+25.57*cos(2*pi*x*7-1.985)+17.09*cos(2*pi*x*8-(-0.719))+15.11*cos(2*pi*x*9-2.218)+7.93*cos(2*pi*x*11-2.308)+7.27*cos(2*pi*x*12-(-2.572))+6.58*cos(2*pi*x*13-(-3.9e-2))+6.24*cos(2*pi*x*14-2.642)+3.51*cos(2*pi*x*15-0.478),[0,1])
 
-func_piccolo = '(972.0*cos(2*pi*x*1-(-1.937))+110.39*cos(2*pi*x*2-1.5e-2)+353.86*cos(2*pi*x*3-(-1.488))+193.81*cos(2*pi*x*4-(-0.313))+33.06*cos(2*pi*x*5-2.853)+87.82*cos(2*pi*x*6-(-0.46))+25.57*cos(2*pi*x*7-1.985)+17.09*cos(2*pi*x*8-(-0.719))+15.11*cos(2*pi*x*9-2.218)+7.93*cos(2*pi*x*11-2.308)+7.27*cos(2*pi*x*12-(-2.572))+6.58*cos(2*pi*x*13-(-3.9e-2))+6.24*cos(2*pi*x*14-2.642)+3.51*cos(2*pi*x*15-0.478))/1033';
+func_piccolo = '(972.0*cos(2*pi*x*1-(-1.937))+110.39*cos(2*pi*x*2-1.5e-2)+353.86*cos(2*pi*x*3-(-1.488))+193.81*cos(2*pi*x*4-(-0.313))+33.06*cos(2*pi*x*5-2.853)+87.82*cos(2*pi*x*6-(-0.46))+25.57*cos(2*pi*x*7-1.985)+17.09*cos(2*pi*x*8-(-0.719))+15.11*cos(2*pi*x*9-2.218)+7.93*cos(2*pi*x*11-2.308)+7.27*cos(2*pi*x*12-(-2.572))+6.58*cos(2*pi*x*13-(-3.9e-2))+6.24*cos(2*pi*x*14-2.642)+3.51*cos(2*pi*x*15-0.478))/1346';
 
 [xdata, ydata, errworst] = fixpt_look1_func_approx(func_piccolo,xmin,xmax,xdt,xscale,ydt,yscale,rndmeth,[],nptsmax,spacing);
 lut_piccolo = ydata*4096;

@@ -77,7 +77,7 @@ begin
 			 ELSE	"000000000000001111" WHEN (data_s >= 1000 OR data_s <= -1000)
 			 ELSE	"000000000000000111" WHEN (data_s >=  750 OR data_s <= -750)
 			 ELSE	"000000000000000011" WHEN (data_s >=  500 OR data_s <= -500)
-			 ELSE	"000000000000000000" WHEN (data_s >=  250 OR data_s <= -250)
+			 ELSE	"000000000000000001" WHEN (data_s >=  250 OR data_s <= -250)
 			 ELSE "000000000000000000";
 			 
 	
