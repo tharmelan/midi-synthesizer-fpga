@@ -1,10 +1,11 @@
 %% Phasen Modulation
 
 figure(2);
-fplot(@(x) sin(2*pi *(x + 1/2*sin(pi*x/2))), [0,20])
+fplot(@(x) sin(2*pi *(x + 1/2*sin(pi*x/2))), [0,5])
 hold on;
 
-fplot(@(x) 1/5*sin(pi*x/2), [0,20])
+fplot(@(x) 1/2*sin(pi*x/2), [0,5])
+fplot(@(x) sin(pi*x*2), [0,5])
 hold off;
 
 %% Frequenz Modulation

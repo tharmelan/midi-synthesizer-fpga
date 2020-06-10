@@ -3,4 +3,10 @@ gpi_sim 00 00 80 00
 uar_sim 90 01 00
 uar_sim 2F 01 00
 uar_sim 00 01 00
-run_sim 00 00 FF FF
+uar_sim B0 01 00
+uar_sim 07 01 00
+uar_sim 08 01 00
+uar_sim B0 01 00
+uar_sim 01 01 00
+uar_sim 20 01 00
+run_sim 00 2F FF FF
