@@ -75,12 +75,12 @@ begin
   end process tone_sum;
   
 	calc_incr : process(all)
-	variable car_incr : std_logic_vector(24 downto 0);
+	variable car_incr : std_logic_vector(25 downto 0);
 	variable mod_incr : std_logic_vector(25 downto 0);
 	begin
 		For i IN 0 TO 9 LOOP
 		
-			car_incr := std_logic_vector(to_signed(to_integer(unsigned(LUT_midi2dds(to_integer(unsigned(note_array(i)))))),N_CUM+1) + (shift_right(signed(dds_modul_array(i)),8)*to_signed(to_integer(unsigned(modulation_i)), 9)));
+			car_incr := std_logic_vector(to_signed(to_integer(unsigned(LUT_midi2dds(to_integer(unsigned(note_array(i)))))),N_CUM+1) + (shift_right(signed(dds_modul_array(i)),8)*to_signed(to_integer(unsigned(modulation_i)), 8)));
 			phi_incr_carrier(i) <= car_incr(N_CUM-1 downto 0);
 			
 			mod_incr := std_logic_vector(shift_right(unsigned(LUT_midi2dds(to_integer(unsigned(note_array(i))))), MODUL_FREQ_DIV) * unsigned(data_entry_i));

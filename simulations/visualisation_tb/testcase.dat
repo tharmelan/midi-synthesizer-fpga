@@ -1,0 +1,3 @@
+gpi_sim 00 02 80 00
+vis_sim 0F FF 00 00
+run_sim 00 00 00 05
