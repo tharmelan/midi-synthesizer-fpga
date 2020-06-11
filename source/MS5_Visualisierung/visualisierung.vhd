@@ -14,8 +14,7 @@ use work.tone_gen_pkg.all;
 -- Entity Declaration 
 -------------------------------------------
 entity visualisierung is
-  port(clk 		   : in  std_logic;
-	   reset_n     : in  std_logic;
+  port(
 	   audiodata_i : in  std_logic_vector(15 downto 0);
       led_o       : out std_logic_vector(17 downto 0);
 		switch		: in	std_logic
@@ -27,35 +26,12 @@ end visualisierung;
 architecture rtl of visualisierung is
 -- Signals & Constants Declaration 
 -------------------------------------------
-	--signal led_s : std_logic_vector(17 downto 0);
-	--signal data_s, next_data_s : signed(N_AUDIO-1 downto 0);
 	signal data_s : signed(N_AUDIO-1 downto 0);
 
 -- Begin Architecture
 -------------------------------------------
 begin
 	
-  --------------------------------------------------
-  -- PROCESS FOR COMBINATORIAL LOGIC
-  --------------------------------------------------
-  comb_logic : process(all)
-  begin
-		--data_s <= next_data_s;
-
-  end process comb_logic;
-
-  --------------------------------------------------
-  -- PROCESS FOR REGISTERS
-  --------------------------------------------------
-  flip_flops : process(clk, reset_n)
-  begin
-    if reset_n = '0' then
-		--next_data_s <= to_signed(0, N_AUDIO);
-    elsif rising_edge(clk) then
-		--next_data_s <= signed(audiodata_i);
-    end if;
-  end process flip_flops;
-
   --------------------------------------------------
   -- CONCURRENT ASSIGNMENT
   --------------------------------------------------
@@ -91,7 +67,7 @@ begin
 			 ELSE	"000000001111111111" WHEN (data_s >= 2500 OR data_s <= -2500) AND switch = '0'
 			 ELSE	"000000000111111111" WHEN (data_s >= 2250 OR data_s <= -2250) AND switch = '0'
 			 ELSE	"000000000011111111" WHEN (data_s >= 2000 OR data_s <= -2000) AND switch = '0'
-			 ELSE	"000000000001111111" WHEN (data_s >= 1750 OR data_s <= -1250) AND switch = '0'
+			 ELSE	"000000000001111111" WHEN (data_s >= 1750 OR data_s <= -1750) AND switch = '0'
 			 ELSE	"000000000000111111" WHEN (data_s >= 1500 OR data_s <= -1500) AND switch = '0'
 			 ELSE	"000000000000011111" WHEN (data_s >= 1250 OR data_s <= -1250) AND switch = '0'
 			 ELSE	"000000000000001111" WHEN (data_s >= 1000 OR data_s <= -1000) AND switch = '0'

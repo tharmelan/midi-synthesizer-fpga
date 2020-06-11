@@ -210,8 +210,6 @@ architecture str of synthi_top is
   
   component Visualisierung
 	port(
-		clk 		   : in  std_logic;
-	   reset_n     : in  std_logic;
 	   audiodata_i : in  std_logic_vector(15 downto 0);
       led_o       : out std_logic_vector(17 downto 0);
 		switch		: in	std_logic
@@ -338,8 +336,6 @@ begin  -- architecture str
 		
 	visual : Visualisierung
 		port map(
-		clk 		   => clock_12m_s,
-	   reset_n     => reset_n_s,
 	   audiodata_i => dacdat_pl(15 downto 0),
       led_o       => LEDR(17 downto 0),
 		switch		=> sw_sync(17)
@@ -354,9 +350,7 @@ begin  -- architecture str
 	  AUD_DACLRCK <= ws;
 	  AUD_ADCLRCK <= ws;
 	  load_o 	  <= load_s;
-	  
-	  --LEDG_0 <= sw_sync(3);
-	  --LEDR_3 <= SW(3);
+
 	  
 	  LCD_RW         <= '0';
 	  LCD_ON         <= '1';

@@ -1,7 +1,14 @@
--------------------------------------------
--- Block code:  lcd_driver.vhd
--- Function:
--------------------------------------------                    
+-- LCD Driver Module for driving HD44780 Controller
+-- A. Greensted, July 2010
+-- H.Gelke, April 2013 : adapted for 32 characters (initially was 40 characters)
+-- M.Tavares, April 2015: adapted for clk12M5, reset_n low active
+-- M.Tavares, May 2015: tick_max value needs to be the divider ratio! 
+--						warm-up & init delay reduced (compromise datasheet vs. HW check)
+-- M.Tavares, April 2016: few clean ups to avoid synthesis warnings. Remains: charRAM read-during-write behaviour.
+-- 
+--     OPEN:  support for data-length 8-Bit
+--            more transparent code with split reg/comb processes for tickGen and FSM-process
+--		                   
 
 library ieee;
 use ieee.std_logic_1164.all;

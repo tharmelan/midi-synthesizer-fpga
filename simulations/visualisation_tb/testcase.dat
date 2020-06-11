@@ -1,3 +1,117 @@
 gpi_sim 00 02 80 00
-vis_sim 0F FF 00 00
+
+vis_sim 8C A0 00 00
+run_sim 00 00 00 05
+
+vis_sim 84 D0 00 00
+run_sim 00 00 00 05
+
+vis_sim 7D 00 00 00
+run_sim 00 00 00 05
+
+vis_sim 75 30 00 00
+run_sim 00 00 00 05
+
+vis_sim 6D 60 00 00
+run_sim 00 00 00 05
+
+vis_sim 65 90 00 00
+run_sim 00 00 00 05
+
+vis_sim 5D C0 00 00
+run_sim 00 00 00 05
+
+vis_sim 55 F0 00 00
+run_sim 00 00 00 05
+
+vis_sim 4E 20 00 00
+run_sim 00 00 00 05
+
+vis_sim 46 50 00 00
+run_sim 00 00 00 05
+
+vis_sim 3E 80 00 00
+run_sim 00 00 00 05
+
+vis_sim 36 B0 00 00
+run_sim 00 00 00 05
+
+vis_sim 2E E0 00 00
+run_sim 00 00 00 05
+
+vis_sim 27 10 00 00
+run_sim 00 00 00 05
+
+vis_sim 1F 40 00 00
+run_sim 00 00 00 05
+
+vis_sim 17 70 00 00
+run_sim 00 00 00 05
+
+vis_sim 0F A0 00 00
+run_sim 00 00 00 05
+
+vis_sim 07 D0 00 00
+run_sim 00 00 00 05
+
+vis_sim 00 00 00 00
+run_sim 00 00 00 05
+
+
+gpi_sim 00 00 80 00
+vis_sim 13 88 00 00
+run_sim 00 00 00 05
+
+vis_sim 11 94 00 00
+run_sim 00 00 00 05
+
+vis_sim 0F A0 00 00
+run_sim 00 00 00 05
+
+vis_sim 0E A6 00 00
+run_sim 00 00 00 05
+
+vis_sim 0D AC 00 00
+run_sim 00 00 00 05
+
+vis_sim 0C B2 00 00
+run_sim 00 00 00 05
+
+vis_sim 0B B8 00 00
+run_sim 00 00 00 05
+
+vis_sim 0A BE 00 00
+run_sim 00 00 00 05
+
+vis_sim 09 C4 00 00
+run_sim 00 00 00 05
+
+vis_sim 08 CA 00 00
+run_sim 00 00 00 05
+
+vis_sim 07 D0 00 00
+run_sim 00 00 00 05
+
+vis_sim 06 D6 00 00
+run_sim 00 00 00 05
+
+vis_sim 05 DC 00 00
+run_sim 00 00 00 05
+
+vis_sim 04 E2 00 00
+run_sim 00 00 00 05
+
+vis_sim 03 E8 00 00
+run_sim 00 00 00 05
+
+vis_sim 02 EE 00 00
+run_sim 00 00 00 05
+
+vis_sim 01 F4 00 00
+run_sim 00 00 00 05
+
+vis_sim 00 FA 00 00
+run_sim 00 00 00 05
+
+vis_sim 00 00 00 00
 run_sim 00 00 00 05

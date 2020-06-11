@@ -31,8 +31,7 @@ end entity visualisierung_tb;
 architecture struct of visualisierung_tb is
 
 	component visualisierung is
-		port(clk 		   : in  std_logic;
-				 reset_n     : in  std_logic;
+		port(
 				 audiodata_i : in  std_logic_vector(15 downto 0);
 				 led_o      : out std_logic_vector(17 downto 0);
 				 switch			 : in	std_logic
@@ -52,8 +51,6 @@ begin
 
 DUT: visualisierung
     port map (
-      clk 		    =>  '0',
-	    reset_n     => '0',
       audiodata_i => audio_data_s,
       led_o       => led_signal_s,
       switch 		  => SW(17)
