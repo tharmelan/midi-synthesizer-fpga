@@ -8,7 +8,7 @@
 -- Markus Bodenmann
 -- Tharmelan Theivanesan
 --
--- source name: midi_conrtrolle
+-- source name: midi_controller
 -- Datum:       14.06.2020
 -------------------------------------------
 
